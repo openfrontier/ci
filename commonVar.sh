@@ -11,15 +11,14 @@ GERRIT_ADMIN_PWD=$2
 GERRIT_ADMIN_EMAIL=$3
 GERRIT_ADMIN_SSH_KEY_DIR=~/.ssh/id_rsa.pub
 
+## LDAP Server
+LDAP_SERVER=172.20.201.98
 ## LDAP account baseDN
-LDAP_ACCOUNTBASE=ou=accounts,dc=vdc,dc=trans-cosmos,dc=com,dc=cn
+LDAP_ACCOUNTBASE=$4
 
 ## Gerrit access hostname
 GERRIT_WEBURL=http://172.20.201.104:8080
 GERRIT_SSH_HOST=172.20.201.104
-
-## LDAP Server
-LDAP_SERVER=172.20.201.98
 
 ## Gerrit server and database containers' name
 GERRIT_NAME=gerrit${SUFFIX}

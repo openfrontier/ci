@@ -18,7 +18,7 @@ Continuous integration system base on other docker projects.
     ## Create Gerrit Jenkins PostgreSQL containers.
     ~/ci/createContainer.sh
     ## Integrate Jenkins with Gerrit.
-    ~/ci/setupContainer.sh <gerrit admin uid> <gerrit admin password> <gerrit admin email>
+    ~/ci/setupContainer.sh <gerrit admin uid> <gerrit admin password> <gerrit admin email> <LDAP account search baseDN>
 
 ## Destroy all containers.(Use with caution!) 
     ~/ci/destroyContainer.sh
