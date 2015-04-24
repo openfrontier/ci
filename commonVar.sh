@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+
 # Define common variables.
 
 ## Suffix of containers' name
@@ -15,8 +15,8 @@ GERRIT_ADMIN_SSH_KEY_DIR=~/.ssh/id_rsa.pub
 LDAP_ACCOUNTBASE=ou=accounts,dc=vdc,dc=trans-cosmos,dc=com,dc=cn
 
 ## Gerrit access hostname
-GERRIT_URL=172.20.201.104
-GERRIT_HOST=172.20.201.104 #in case Gerrit is behind a proxy which has a different IP.
+GERRIT_WEBURL=http://172.20.201.104:8080
+GERRIT_SSH_HOST=172.20.201.104
 
 ## LDAP Server
 LDAP_SERVER=172.20.201.98
@@ -25,6 +25,12 @@ LDAP_SERVER=172.20.201.98
 GERRIT_NAME=gerrit${SUFFIX}
 PG_GERRIT_NAME=pg-gerrit${SUFFIX}
 
+## Gerrit docker image name
+GERRIT_IMAGE_NAME=openfrontier/gerrit
+
 ## Jenkins container's name
 JENKINS_NAME=jenkins-master${SUFFIX}
+
+## Jenkins docker image name
+JENKINS_IMAGE_NAME=openfrontier/jenkins
 

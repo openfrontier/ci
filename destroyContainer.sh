@@ -1,8 +1,7 @@
 #!/bin/bash
-set -e
 
 # Add common variables.
-source ./commonVar.sh
+source ~/ci/commonVar.sh
 
 # Destroy Jenkins server container.
 source ~/jenkins-docker/destroyJenkins.sh
