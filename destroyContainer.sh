@@ -1,5 +1,5 @@
 #!/bin/bash
-
+SUFFIX=$1
 # Add common variables.
 source ~/ci/commonVar.sh
 
