@@ -37,3 +37,9 @@ JENKINS_OPTS=--prefix=/jenkins
 ## Jenkins docker image's name
 JENKINS_IMAGE_NAME=openfrontier/jenkins
 
+## Nginx docker container's name
+NGINX_NAME=nginx-proxy
+
+## Nginx docker images's name
+NGINX_IMAGE_NAME=nginx
+
