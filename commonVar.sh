@@ -16,20 +16,24 @@ LDAP_SERVER=172.20.201.98
 ## LDAP account baseDN
 LDAP_ACCOUNTBASE=${LDAP_ACCOUNTBASE:-$1}
 
-## Gerrit access hostname
-GERRIT_WEBURL=http://172.20.201.104:8080
-GERRIT_SSH_HOST=172.20.201.104
-
 ## Gerrit server and database containers' name
 GERRIT_NAME=gerrit${SUFFIX}
 PG_GERRIT_NAME=pg-gerrit${SUFFIX}
 
-## Gerrit docker image name
-GERRIT_IMAGE_NAME=openfrontier/gerrit
+## Gerrit access hostname
+GERRIT_WEBURL=http://172.20.201.104/${GERRIT_NAME}/
+HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}/
+GERRIT_SSH_HOST=172.20.201.104
+
+## Gerrit docker image's name
+GERRIT_IMAGE_NAME=gerrit
 
 ## Jenkins container's name
 JENKINS_NAME=jenkins-master${SUFFIX}
 
-## Jenkins docker image name
+## Jenkins start options
+JENKINS_OPTS=--prefix=/jenkins
+
+## Jenkins docker image's name
 JENKINS_IMAGE_NAME=openfrontier/jenkins
 
