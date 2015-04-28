@@ -10,3 +10,6 @@ source ~/gerrit-docker/createGerrit.sh
 # Create Jenkins server container.
 source ~/jenkins-docker/createJenkins.sh
 
+# Create Nginx proxy server container.
+source ~/nginx-docker/createNginx.sh
+

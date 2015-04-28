@@ -9,3 +9,6 @@ source ~/jenkins-docker/destroyJenkins.sh
 # Destroy Gerrit server container.
 source ~/gerrit-docker/destroyGerrit.sh
 
+# Destroy Nginx proxy server container.
+source ~/nginx-docker/destroyNginx.sh
+

@@ -29,11 +29,17 @@ GERRIT_SSH_HOST=172.20.201.104
 GERRIT_IMAGE_NAME=gerrit
 
 ## Jenkins container's name
-JENKINS_NAME=jenkins-master${SUFFIX}
+JENKINS_NAME=jenkins${SUFFIX}
 
 ## Jenkins start options
-JENKINS_OPTS=--prefix=/jenkins
+JENKINS_OPTS=--prefix=/${JENKINS_NAME}
 
 ## Jenkins docker image's name
 JENKINS_IMAGE_NAME=openfrontier/jenkins
+
+## Nginx docker container's name
+NGINX_NAME=nginx-proxy
+
+## Nginx docker images's name
+NGINX_IMAGE_NAME=nginx
 
