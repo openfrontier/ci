@@ -1,5 +1,8 @@
 # ci project
 Continuous integration system base on other docker projects.
+Create a Gerrit with PostgreSQL as backend and OpenLDAP as authentication server.
+Create a Jenkins that integrate with Gerrit.
+Create a Nginx as a reverse proxy of the Gerrit and Jenkins just created.
 
 ## Get docker images.
     docker pull openfrontier/gerrit

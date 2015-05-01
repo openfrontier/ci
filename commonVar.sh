@@ -21,8 +21,8 @@ GERRIT_NAME=gerrit${SUFFIX}
 PG_GERRIT_NAME=pg-gerrit${SUFFIX}
 
 ## Gerrit access hostname
-GERRIT_WEBURL=http://172.20.201.104/${GERRIT_NAME}/
-HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}/
+GERRIT_WEBURL=http://172.20.201.104/${GERRIT_NAME}
+HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}
 GERRIT_SSH_HOST=172.20.201.104
 
 ## Gerrit docker image's name
@@ -37,8 +37,11 @@ JENKINS_OPTS=--prefix=/${JENKINS_NAME}
 ## Jenkins docker image's name
 JENKINS_IMAGE_NAME=openfrontier/jenkins
 
+## Jenkins access
+JENKINS_WEBURL=http://172.20.201.104/${JENKINS_NAME}
+
 ## Nginx docker container's name
-NGINX_NAME=nginx-proxy
+NGINX_NAME=proxy
 
 ## Nginx docker images's name
 NGINX_IMAGE_NAME=nginx
