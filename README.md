@@ -33,7 +33,7 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
     ## Import demo project to Gerrit and Jenkins.
     ~/ci/importDemoProject.sh  <gerrit admin uid> <gerrit admin password> <gerrit admin email>
 
-## Access those services through proxy.
+## Access those services.
     ## Gerrit
     http://your.server.url/gerrit
     Login by <gerrit admin uid> and <gerrit admin password>
