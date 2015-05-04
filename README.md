@@ -12,6 +12,7 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
 ## Get docker images.
     docker pull openfrontier/gerrit
     docker pull openfrontier/jenkins
+    docker pull sameersbn/redmine
     docker pull postgres
     docker pull nginx
 
