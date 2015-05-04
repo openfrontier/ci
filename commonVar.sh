@@ -40,6 +40,13 @@ JENKINS_IMAGE_NAME=openfrontier/jenkins
 ## Jenkins access
 JENKINS_WEBURL=http://172.20.201.104/${JENKINS_NAME}
 
+## Redmine container's name
+REDMINE_NAME=redmine${SUFFIX}
+PG_REDMINE_NAME=pg-redmine${SUFFIX}
+
+## Redmine docker image's name
+REDMINE_IMAGE_NAME=sameersbn/redmine
+
 ## Nginx docker container's name
 NGINX_NAME=proxy
 
