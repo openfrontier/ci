@@ -10,7 +10,6 @@ JENKINS_WEBURL=http://172.20.201.104/jenkins${SUFFIX}
 GERRIT_SSH_HOST=172.20.201.104
 
 curl -X PUT --user ${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD} -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < ~/ci/demoProject.json
-curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/config.xml
 
 mkdir demo
 git init demo
@@ -28,3 +27,5 @@ git commit -m "Init project"
 git push origin
 cd -
 rm -rf demo
+
+curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/config.xml
