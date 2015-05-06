@@ -5,6 +5,9 @@
 ## Suffix of containers' name
 SUFFIX=${SUFFIX:-$5}
 
+## Host IP or DNS name.
+HOST_NAME=172.20.201.104
+
 ## Gerrit administrator's uid in LDAP
 GERRIT_ADMIN_UID=${GERRIT_ADMIN_UID:-$2}
 GERRIT_ADMIN_PWD=${GERRIT_ADMIN_PWD:-$3}
@@ -21,12 +24,12 @@ GERRIT_NAME=gerrit${SUFFIX}
 PG_GERRIT_NAME=pg-gerrit${SUFFIX}
 
 ## Gerrit access hostname
-GERRIT_WEBURL=http://172.20.201.104/${GERRIT_NAME}
+GERRIT_WEBURL=http://${HOST_NAME}/${GERRIT_NAME}
 HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}
-GERRIT_SSH_HOST=172.20.201.104
+GERRIT_SSH_HOST=${HOST_NAME}
 
 ## Gerrit docker image's name
-GERRIT_IMAGE_NAME=openfrontier/gerrit
+GERRIT_IMAGE_NAME=openfrontier/gerrit:test
 
 ## Jenkins container's name
 JENKINS_NAME=jenkins${SUFFIX}
@@ -38,7 +41,7 @@ JENKINS_OPTS=--prefix=/${JENKINS_NAME}
 JENKINS_IMAGE_NAME=openfrontier/jenkins
 
 ## Jenkins access
-JENKINS_WEBURL=http://172.20.201.104/${JENKINS_NAME}
+JENKINS_WEBURL=http://${HOST_NAME}/${JENKINS_NAME}
 
 ## Redmine container's name
 REDMINE_NAME=redmine${SUFFIX}
