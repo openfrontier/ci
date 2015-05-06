@@ -29,7 +29,7 @@ HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}
 GERRIT_SSH_HOST=${HOST_NAME}
 
 ## Gerrit docker image's name
-GERRIT_IMAGE_NAME=openfrontier/gerrit:test
+GERRIT_IMAGE_NAME=openfrontier/gerrit
 
 ## Jenkins container's name
 JENKINS_NAME=jenkins${SUFFIX}
