@@ -56,3 +56,7 @@ NGINX_NAME=proxy
 ## Nginx docker images's name
 NGINX_IMAGE_NAME=nginx
 
+## Sonatype Nexus config
+## Comment out this variable if there's no nexus server.
+NEXUS_WEBURL=http://172.20.201.104:8081/content/groups/public
+
