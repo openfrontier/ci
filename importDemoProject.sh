@@ -21,6 +21,7 @@ cd ~/ci/demo
 git config core.filemode false
 git config user.name  ${GERRIT_ADMIN_UID}
 git config user.email ${GERRIT_ADMIN_EMAIL}
+git config push.default simple
 git remote add origin ssh://${GERRIT_ADMIN_UID}@${GERRIT_SSH_HOST}:29418/demo
 git fetch -q origin
 git fetch -q origin refs/meta/config:refs/remotes/origin/meta/config
