@@ -34,7 +34,7 @@ gerrit:
     - DATABASE_TYPE=postgresql 
     - AUTH_TYPE=LDAP 
     - LDAP_SERVER=192.168.1.250
-    - LDAP_ACCOUNTBASE="cn=users,cn=accounts,dc=pod0,dc=net0,dc=nethsd"
+    - LDAP_ACCOUNTBASE=cn=users,cn=accounts,dc=pod0,dc=nethsd,dc=net
 jenkins:
   image: openfrontier/jenkins
   name:
