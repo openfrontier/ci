@@ -1,0 +1,84 @@
+datagerrit:
+  image: datagerrit
+  name: 
+    - data-gerrit
+  command: tail -f /dev/null
+datajenkins:
+  image: datajenkins
+  name: 
+    - data-jenkins
+  command: tail -f /dev/null
+pggerrit:
+  image: postgres
+  name:
+    - pg-gerrit
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_USER=gerrit2
+    - POSTGRES_PASSWORD=gerrit
+    - POSTGRES_DB=reviewdb
+gerrit:
+  image: openfrontier/gerrit
+  name: 
+    - gerrit
+  links:
+    - pggerrit:db
+  ports:
+    - "29418:29418"
+  volumes_from:
+    - datagerrit
+  environment:
+    - WEBURL=http://192.168.1.141/gerrit
+    - HTTPD_LISTENURL=proxy-http://*:8080/gerrit
+    - DATABASE_TYPE=postgresql 
+    - AUTH_TYPE=LDAP 
+    - LDAP_SERVER=192.168.1.250
+    - LDAP_ACCOUNTBASE="cn=users,cn=accounts,dc=pod0,dc=net0,dc=nethsd"
+jenkins:
+  image: openfrontier/jenkins
+  name:
+    - jenkins-master
+  ports:
+    - "50000:50000"
+  links:
+    - gerrit
+  volumes_from:
+    - datajenkins
+  command: --prefix=/jenkins
+pgredmine:
+  image: postgres
+  name: 
+    - pg-redmine
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_USER=redmine
+    - POSTGRES_PASSWORD=redmine
+    - POSTGRES_DB=redmine
+redmine:
+  image: sameersbn/redmine
+  name:
+    - redmine
+  links:
+    - pgredmine:postgresql
+  environment:
+    - DB_NAME=redmine
+    - DB_USER=redmine
+    - DB_PASS=redmine
+    - REDMINE_RELATIVE_URL_ROOT=/redmine
+    - REDMINE_FETCH_COMMITS=hourly
+  volumes_from:
+    - gerrit
+nginxproxy:
+  image: nginx
+  name:
+    - nginx-proxy
+  ports:
+    - "80:80"
+  links:
+    - gerrit
+    - jenkins
+    - redmine
+  volumes:
+    - ~/nginx-docker/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
