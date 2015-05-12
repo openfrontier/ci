@@ -29,12 +29,12 @@ gerrit:
   volumes_from:
     - datagerrit
   environment:
-    - WEBURL=http://192.168.1.141/gerrit
+    - WEBURL=http://172.17.1.100/gerrit
     - HTTPD_LISTENURL=proxy-http://*:8080/gerrit
     - DATABASE_TYPE=postgresql 
     - AUTH_TYPE=LDAP 
-    - LDAP_SERVER=192.168.1.250
-    - LDAP_ACCOUNTBASE=cn=users,cn=accounts,dc=pod0,dc=nethsd,dc=net
+    - LDAP_SERVER=172.17.1.250
+    - LDAP_ACCOUNTBASE=cn=users,cn=accounts,dc=example,dc=com
 jenkins:
   image: openfrontier/jenkins
   name:
