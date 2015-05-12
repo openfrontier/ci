@@ -18,7 +18,7 @@ Create a coreos/etcd as a sidekick container to store configuration variables
 ## Create docker-compose.yml file 
     ## You can customize your variables in the setEnv.sh, then run setEnv.sh, it will generate a docker-compose.yml file similar to the docker-compose.yml.example 
     ## The default location of the gerenated docker-compose.yml file is in /tmp, you may change the location in docker-compose.toml config file.
-    ~/ci/setEnv.sh
+    sh ~/ci/setEnv.sh
     
     ## Or you can use the docker-compose.yml.example as a template, and change the parameters in it based on your environment,
     ## Following parameters are most likely need be changed:
