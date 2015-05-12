@@ -9,7 +9,7 @@ datajenkins:
     - {{getv "/services/datajenkins/name"}}
   command: tail -f /dev/null
 pggerrit:
-  image: {{getv "/services/pggerrit/name"}}
+  image: {{getv "/services/pggerrit/image"}}
   name:
     - {{getv "/services/pggerrit/name"}}
   ports:

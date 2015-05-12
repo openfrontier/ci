@@ -1,12 +1,12 @@
 datagerrit:
   image: datagerrit
   name: 
-    - data-gerrit
+    - datagerrit
   command: tail -f /dev/null
 datajenkins:
   image: datajenkins
   name: 
-    - data-jenkins
+    - datajenkins
   command: tail -f /dev/null
 pggerrit:
   image: postgres
@@ -38,7 +38,7 @@ gerrit:
 jenkins:
   image: openfrontier/jenkins
   name:
-    - jenkins-master
+    - jenkins
   ports:
     - "50000:50000"
   links:
@@ -81,4 +81,4 @@ nginxproxy:
     - jenkins
     - redmine
   volumes:
-    - ~/nginx-docker/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+    - /root/nginx-docker/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro

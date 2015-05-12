@@ -6,15 +6,13 @@
 #
 
 # First create naming spaces for etcd variables
-etcdctl mkdir /services
-etcdctl mkdir /services/datagerrit
-etcdctl mkdir /services/datajenkins
-etcdctl mkdir /services/pggerrit
-etcdctl mkdir /services/gerrit
-etcdctl mkdir /services/jenkins
-etcdctl mkdir /services/pgredmine
-etcdctl mkdir /services/redmine
-etcdctl mkdir /services/nginxproxy
+for svc in /services /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
+do
+    etcdctl ls $svc > /dev/null
+    if [ $? -ne 0 ]; then
+        etcdctl mkdir $svc
+    fi
+done
 
 # datagerrit service: this is a data conainter serving the gerrit container
 etcdctl set /services/datagerrit/image datagerrit
@@ -25,6 +23,7 @@ etcdctl set /services/datajenkins/image datajenkins
 etcdctl set /services/datajenkins/name datajenkins
 
 # pggerrit service: this is a postgres container serving the gerrit container
+etcdctl set /services/pggerrit/image postgres
 etcdctl set /services/pggerrit/name pg-gerrit
 etcdctl set /services/pggerrit/postgres_user gerrit2
 etcdctl set /services/pggerrit/postgres_password gerrit

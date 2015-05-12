@@ -1,12 +1,12 @@
 [template]
 src = "docker-compose.tmpl"
-dest = "/tmp/my-docker-compose.yml"
+dest = "/tmp/docker-compose.yml"
 keys = [
 "/services/datagerrit/image",
 "/services/datagerrit/name",
 "/services/datajenkins/image",
 "/services/datajenkins/name",
-"/services/pggerrit/name",
+"/services/pggerrit/image",
 "/services/pggerrit/name",
 "/services/pggerrit/postgres_user",
 "/services/pggerrit/postgres_password",
