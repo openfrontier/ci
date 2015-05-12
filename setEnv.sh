@@ -85,11 +85,11 @@ do
 done
 
 # datagerrit service: this is a data conainter serving the gerrit container
-etcdctl set /services/datagerrit/image datagerrit
+etcdctl set /services/datagerrit/image kfmaster/datagerrit
 etcdctl set /services/datagerrit/name datagerrit
 
 # datajenkins service: this is a data conainter serving the jenkins container
-etcdctl set /services/datajenkins/image datajenkins
+etcdctl set /services/datajenkins/image kfmaster/datajenkins
 etcdctl set /services/datajenkins/name datajenkins
 
 # pggerrit service: this is a postgres container serving the gerrit container

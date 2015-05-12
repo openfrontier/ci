@@ -1,10 +1,10 @@
 datagerrit:
-  image: datagerrit
+  image: kfmaster/datagerrit
   name: 
     - datagerrit
   command: tail -f /dev/null
 datajenkins:
-  image: datajenkins
+  image: kfmaster/datajenkins
   name: 
     - datajenkins
   command: tail -f /dev/null
