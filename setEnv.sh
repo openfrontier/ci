@@ -38,10 +38,24 @@ else
     ln -s /usr/local/docker-compose /usr/bin/docker-compose
 fi
 
+# Start a sidekick container based on coreos/etcd to store user variables
+docker ps |grep -q coreos/etcd
+if [ $? -eq 0 ]; then
+    echo "There are coreos/etcd containers running, stop them to begin fresh"
+    docker ps |grep coreos/etcd |awk '{print $1}' |xargs docker stop
+fi
+
+docker run \
+-p 4001:4001 \
+-d coreos/etcd
+
+echo "Waiting 10 seconds for the etcd container to come up..."
+sleep 10
+
 # First create naming spaces for etcd variables
 for svc in /services /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
 do
-    etcdctl ls $svc > /dev/null
+    etcdctl ls $svc 1> /dev/null 2>&1
     if [ $? -ne 0 ]; then
         etcdctl mkdir $svc
     fi
