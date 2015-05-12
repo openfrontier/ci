@@ -46,12 +46,21 @@ else
     ln -s /usr/local/docker-compose /usr/bin/docker-compose
 fi
 
-# Retrieve the docker-compose template files 
+# Retrieve the docker-compose template files and put them in /etc/confd/{templates,conf.d} 
 echo "Retrieving docker-compose template files"
 mkdir -p /etc/confd/{templates,conf.d}
-curl -sL https://github.com/kfmaster/ci/blob/docker-compose/docker-compose.yml.example -o /etc/confd/conf.d/docker-compose.yml.example
-curl -sL https://github.com/kfmaster/ci/blob/docker-compose/docker-compose.tmpl -o /etc/confd/templates/docker-compose.tmpl
-curl -sL https://github.com/kfmaster/ci/blob/docker-compose/docker-compose.toml -o /etc/confd/conf.d/docker-compose.toml
+for myfile in docker-compose.yml.example docker-compose.tmpl docker-compose.toml
+do
+if [ -e "./${myfile}" ]; then
+    if [ "${myfile}" == "docker-compose.tmpl" ]; then
+        cp ./${myfile} /etc/confd/templates/${myfile}
+    else
+        cp ./${myfile} /etc/confd/conf.d/${myfile}
+    fi
+else
+    echo "Can not locate ${myfile} in current directory, please put it in current directory."
+fi
+done
 
 
 # Start a sidekick container based on coreos/etcd to store user variables
@@ -141,14 +150,14 @@ echo
 }
 
 function generate_config_file() {
-# confd program will use config files in /etc/confd/{templates,conf.d} to generate the docker-compose.yml file needed by this project
+# confd program will use config files in /etc/confd/{templates,conf.d} to generate the /tmp/docker-compose.yml file needed by this project
 # Please check the files in /etc/confd/templates and /etc/confd/conf.d for more details
-echo "(3) Using confd to gerenate a docker-compose.yml file at the default destination"
+echo "(3) Using confd to gerenate a docker-compose.yml file in /tmp."
 echo
 
 confd -onetime -backend etcd -node 127.0.0.1:4001
 echo
-echo "Please check if /etc/confd/conf.d/docker-compose.yml generated as expected and run docker-compoase against it."
+echo "Please check if /tmp/docker-compose.yml generated as expected and run docker-compoase against it."
 }
 
 prepare_environment

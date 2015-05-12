@@ -17,7 +17,7 @@ Create a coreos/etcd as a sidekick container to store configuration variables
 
 ## Create docker-compose.yml file 
     ## You can customize your variables in the setEnv.sh, then run setEnv.sh, it will generate a docker-compose.yml file similar to the docker-compose.yml.example 
-    ## The default location of the gerenated docker-compose.yml file is in /etc/confd/conf.d/
+    ## The default location of the gerenated docker-compose.yml file is in /tmp, you may change the location in docker-compose.toml config file.
     ~/ci/setEnv.sh
     
     ## Or you can use the docker-compose.yml.example as a template, and change the parameters in it based on your environment,
@@ -27,7 +27,7 @@ Create a coreos/etcd as a sidekick container to store configuration variables
     LDAP_ACCOUNTBASE    # Change the base to your LDAP account base, this example is based on a freeipa LDAP server with domain "example.com";
 
 ## Use docker-compose to start,stop or monitor the containers in this project
-    ## cd to the directory where the docker-compose.yml is generated, run following commands:
+    ## cd to the directory where the docker-compose.yml is generated (by default it is in /tmp), run following commands:
     docker-compose up
 
     ## If you want to run the containers in detached mode, add a -d switch:
