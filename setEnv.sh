@@ -5,6 +5,39 @@
 # Using etcd set variables used by confd to gernerate the docker-compose.yml file for the ci project
 #
 
+# This script need etcdctl, confd, and docker-compose installed.
+if [ ! -d /usr/local ]; then
+    mkdir -p /usr/local
+fi
+
+# Download and install etcdctl if it does not exist on this server
+if [ -x "/usr/bin/etcdctl" ]; then
+    echo "etcdctl is available at: /usr/bin/etcdctl"
+else
+    curl -L  https://github.com/coreos/etcd/releases/download/v2.1.0-alpha.0/etcd-v2.1.0-alpha.0-linux-amd64.tar.gz -o /usr/local/etcd-v2.1.0-alpha.0-linux-amd64.tar.gz
+    cd /usr/local && tar xzf /usr/local/etcd-v2.1.0-alpha.0-linux-amd64.tar.gz
+    chmod +x /usr/local/etcd-v2.1.0-alpha.0-linux-amd64/etcdctl
+    ln -s /usr/local/etcd-v2.1.0-alpha.0-linux-amd64/etcdctl /usr/bin/etcdctl
+fi
+
+# Download and install confd if it does not exist on this server
+if [ -x "/usr/bin/confd" ]; then
+    echo "confd is available at: /usr/bin/confd"
+else
+    curl -L https://github.com/kelseyhightower/confd/releases/download/v0.9.0/confd-0.9.0-linux-amd64 -o /usr/local/confd-0.9.0-linux-amd64
+    chmod +x /usr/local/confd-0.9.0-linux-amd64
+    ln -s /usr/local/confd-0.9.0-linux-amd64 /usr/bin/confd
+fi
+
+# Download and install docker-compose if it does not exist on this server
+if [ -x "/usr/bin/docker-compose" ]; then
+    echo "docker-compose is available at: /usr/bin/docker-compose"
+else
+    curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/docker-compose
+    chmod +x /usr/local/docker-compose
+    ln -s /usr/local/docker-compose /usr/bin/docker-compose
+fi
+
 # First create naming spaces for etcd variables
 for svc in /services /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
 do
