@@ -1,0 +1,84 @@
+datagerrit:
+  image: {{getv "DATAGERRIT_IMAGE"}}
+  name: 
+    - {{getv "datagerrit_name"}}
+  command: tail -f /dev/null
+datajenkins:
+  image: {{getv "datajenkins_image"}}
+  name: 
+    - {{getv "datajenkins_name"}}
+  command: tail -f /dev/null
+pggerrit:
+  image: {{getv "pggerrit_name"}}
+  name:
+    - {{getv "pggerrit_name"}}
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_USER={{getv "pggerrit_postgres_user"}}
+    - POSTGRES_PASSWORD={{getv "pggerrit_postgres_password"}}
+    - POSTGRES_DB={{getv "pggerrit_postgres_db"}}
+gerrit:
+  image: {{getv "gerrit_image"}}
+  name: 
+    - {{getv "gerrit_name"}}
+  links:
+    - pggerrit:db
+  ports:
+    - "29418:29418"
+  volumes_from:
+    - datagerrit
+  environment:
+    - WEBURL={{getv "gerrit_weburl"}}
+    - HTTPD_LISTENURL={{getv "gerrit_httpd_listenurl"}}
+    - DATABASE_TYPE={{getv "gerrit_database_type"}} 
+    - AUTH_TYPE={{getv "gerrit_auth_type"}} 
+    - LDAP_SERVER={{getv "gerrit_ldap_server"}}
+    - LDAP_ACCOUNTBASE={{getv "gerrit_ldap_accountbase"}}
+jenkins:
+  image: {{getv "jenkins_image"}}
+  name:
+    - {{getv "jenkins_name"}}
+  ports:
+    - "50000:50000"
+  links:
+    - gerrit
+  volumes_from:
+    - datajenkins
+  command: {{getv "jenkins_opts"}}
+pgredmine:
+  image: {{getv "pgredmine_image"}}
+  name: 
+    - {{getv "pgredmine_name"}}
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_USER={{getv "pgredmine_postgres_user"}}
+    - POSTGRES_PASSWORD={{getv "pgredmine_postgres_password"}}
+    - POSTGRES_DB={{getv "pgredmine_postgres_db"}}
+redmine:
+  image: {{getv "redmine_image"}}
+  name:
+    - {{getv "redmine_name"}}
+  links:
+    - pgredmine:postgresql
+  environment:
+    - DB_NAME={{getv "redmine_db_name"}}
+    - DB_USER={{getv "redmine_db_user"}}
+    - DB_PASS={{getv "redmine_db_pass"}}
+    - REDMINE_RELATIVE_URL_ROOT={{getv "redmine_redmin_relative_url_root"}}
+    - REDMINE_FETCH_COMMITS={{getv "redmine_redmin_fetch_commits"}}
+  volumes_from:
+    - gerrit
+nginxproxy:
+  image: {{getv "nginxproxy_image"}}
+  name:
+    - {{getv "nginxproxy_name"}}
+  ports:
+    - "80:80"
+  links:
+    - gerrit
+    - jenkins
+    - redmine
+  volumes:
+    - {{getv "nginxproxy_volumes"}}
