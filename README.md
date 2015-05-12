@@ -19,6 +19,7 @@ Create a coreos/etcd as a sidekick container to store configuration variables
     ## First customize your variables in the setEnv.sh, then run setEnv.sh, it will generate a docker-compose.yml file similar to the docker-compose.yml.example 
     ~/ci/setEnv.sh
 
+## Use docker-compose to start,stop or monitor the containers in this project
     ## cd to the directory where the docker-compose.yml is generated, run following commands:
     docker-compose up
 
@@ -39,6 +40,7 @@ Create a coreos/etcd as a sidekick container to store configuration variables
     docker-compose rm
 
 ## Following are instructions if you do not want to use docker-compose
+
 ## Get docker images.
     docker pull openfrontier/gerrit
     docker pull openfrontier/jenkins
