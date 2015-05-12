@@ -1,27 +1,27 @@
 datagerrit:
-  image: {{getv "DATAGERRIT_IMAGE"}}
+  image: {{getv "/services/datagerrit/image"}}
   name: 
-    - {{getv "datagerrit_name"}}
+    - {{getv "/services/datagerrit/name"}}
   command: tail -f /dev/null
 datajenkins:
-  image: {{getv "datajenkins_image"}}
+  image: {{getv "/services/datajenkins/image"}}
   name: 
-    - {{getv "datajenkins_name"}}
+    - {{getv "/services/datajenkins/name"}}
   command: tail -f /dev/null
 pggerrit:
-  image: {{getv "pggerrit_name"}}
+  image: {{getv "/services/pggerrit/name"}}
   name:
-    - {{getv "pggerrit_name"}}
+    - {{getv "/services/pggerrit/name"}}
   ports:
     - 5432
   environment:
-    - POSTGRES_USER={{getv "pggerrit_postgres_user"}}
-    - POSTGRES_PASSWORD={{getv "pggerrit_postgres_password"}}
-    - POSTGRES_DB={{getv "pggerrit_postgres_db"}}
+    - POSTGRES_USER={{getv "/services/pggerrit/postgres_user"}}
+    - POSTGRES_PASSWORD={{getv "/services/pggerrit/postgres_password"}}
+    - POSTGRES_DB={{getv "/services/pggerrit/postgres_db"}}
 gerrit:
-  image: {{getv "gerrit_image"}}
+  image: {{getv "/services/gerrit/image"}}
   name: 
-    - {{getv "gerrit_name"}}
+    - {{getv "/services/gerrit/name"}}
   links:
     - pggerrit:db
   ports:
@@ -29,51 +29,51 @@ gerrit:
   volumes_from:
     - datagerrit
   environment:
-    - WEBURL={{getv "gerrit_weburl"}}
-    - HTTPD_LISTENURL={{getv "gerrit_httpd_listenurl"}}
-    - DATABASE_TYPE={{getv "gerrit_database_type"}} 
-    - AUTH_TYPE={{getv "gerrit_auth_type"}} 
-    - LDAP_SERVER={{getv "gerrit_ldap_server"}}
-    - LDAP_ACCOUNTBASE={{getv "gerrit_ldap_accountbase"}}
+    - WEBURL={{getv "/services/gerrit/weburl"}}
+    - HTTPD_LISTENURL={{getv "/services/gerrit/httpd_listenurl"}}
+    - DATABASE_TYPE={{getv "/services/gerrit/database_type"}} 
+    - AUTH_TYPE={{getv "/services/gerrit/auth_type"}} 
+    - LDAP_SERVER={{getv "/services/gerrit/ldap_server"}}
+    - LDAP_ACCOUNTBASE={{getv "/services/gerrit/ldap_accountbase"}}
 jenkins:
-  image: {{getv "jenkins_image"}}
+  image: {{getv "/services/jenkins/image"}}
   name:
-    - {{getv "jenkins_name"}}
+    - {{getv "/services/jenkins/name"}}
   ports:
     - "50000:50000"
   links:
     - gerrit
   volumes_from:
     - datajenkins
-  command: {{getv "jenkins_opts"}}
+  command: --prefix={{getv "/services/jenkins/opts"}}
 pgredmine:
-  image: {{getv "pgredmine_image"}}
+  image: {{getv "/services/pgredmine/image"}}
   name: 
-    - {{getv "pgredmine_name"}}
+    - {{getv "/services/pgredmine/name"}}
   ports:
     - 5432
   environment:
-    - POSTGRES_USER={{getv "pgredmine_postgres_user"}}
-    - POSTGRES_PASSWORD={{getv "pgredmine_postgres_password"}}
-    - POSTGRES_DB={{getv "pgredmine_postgres_db"}}
+    - POSTGRES_USER={{getv "/services/pgredmine/postgres_user"}}
+    - POSTGRES_PASSWORD={{getv "/services/pgredmine/postgres_password"}}
+    - POSTGRES_DB={{getv "/services/pgredmine/postgres_db"}}
 redmine:
-  image: {{getv "redmine_image"}}
+  image: {{getv "/services/redmine/image"}}
   name:
-    - {{getv "redmine_name"}}
+    - {{getv "/services/redmine/name"}}
   links:
     - pgredmine:postgresql
   environment:
-    - DB_NAME={{getv "redmine_db_name"}}
-    - DB_USER={{getv "redmine_db_user"}}
-    - DB_PASS={{getv "redmine_db_pass"}}
-    - REDMINE_RELATIVE_URL_ROOT={{getv "redmine_redmin_relative_url_root"}}
-    - REDMINE_FETCH_COMMITS={{getv "redmine_redmin_fetch_commits"}}
+    - DB_NAME={{getv "/services/redmine/db_name"}}
+    - DB_USER={{getv "/services/redmine/db_user"}}
+    - DB_PASS={{getv "/services/redmine/db_pass"}}
+    - REDMINE_RELATIVE_URL_ROOT={{getv "/services/redmine/redmin_relative_url_root"}}
+    - REDMINE_FETCH_COMMITS={{getv "/services/redmine/redmin_fetch_commits"}}
   volumes_from:
     - gerrit
 nginxproxy:
-  image: {{getv "nginxproxy_image"}}
+  image: {{getv "/services/nginxproxy/image"}}
   name:
-    - {{getv "nginxproxy_name"}}
+    - {{getv "/services/nginxproxy/name"}}
   ports:
     - "80:80"
   links:
@@ -81,4 +81,4 @@ nginxproxy:
     - jenkins
     - redmine
   volumes:
-    - {{getv "nginxproxy_volumes"}}
+    - {{getv "/services/nginxproxy/volumes"}}
