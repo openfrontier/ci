@@ -1,6 +1,6 @@
 [template]
 src = "docker-compose.tmpl"
-dest = "/tmp/docker-compose.yml"
+dest = "docker-compose.yml"
 keys = [
 "/services/datagerrit/image",
 "/services/datagerrit/name",
