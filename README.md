@@ -15,11 +15,12 @@ Create a data container based on busybox to provide volume for the Jenkins conta
 
 Create a a sidekick container based on coreos/etcd to store configuration variables and generate the docker-compose.yml file 
 
-## Create your docker-compose.yml and nginx-proxy.conf file 
+## Create your docker-compose.yml, nginx-proxy.conf and postinstall scripts  
     ## You can customize your local variables in setEnv.sh, those varibles are set by etcdctl command in that script; 
     ## By default, /etc/confd/output/docker-compose.yml will be generated after run setEnv.sh script; 
     ## A /etc/confd/output/nginx-proxy.conf will also be gernerated by setEnv.sh script;
-    ## You may change the output location in ci-docker-compose.toml and ci-nginx-proxy-conf.toml config file.
+    ## Some postinstall scripts are generated in /etc/confd/output/postinstall;
+    ## You may change the output location in ci-docker-compose.toml and other .toml config files.
 
     sh ~/ci/setEnv.sh
     
