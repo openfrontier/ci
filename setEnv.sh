@@ -6,7 +6,7 @@
 # This script contains 3 steps: 
 # (1) prepare_environment: to install pre-requisites software and config files;
 # (2) set_varibles:  to set variables needed for this project;
-# (3) generate_config_file:  to generate a /tmp/docker-compose.yml file for this project;
+# (3) generate_config_file:  to generate a /etc/confd/output/docker-compose.yml file for this project;
 #
 
 function prepare_environment() {
@@ -48,11 +48,11 @@ fi
 
 # Retrieve the docker-compose template files and put them in /etc/confd/{templates,conf.d} 
 echo "Retrieving docker-compose template files"
-mkdir -p /etc/confd/{templates,conf.d}
-for myfile in ci-docker-compose.yml.example ci-docker-compose.tmpl ci-docker-compose.toml
+mkdir -p /etc/confd/{templates,conf.d,output}
+for myfile in ci-docker-compose.yml.example ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml
 do
 if [ -e "./${myfile}" ]; then
-    if [ "${myfile}" == "docker-compose.tmpl" ]; then
+    if [ "${myfile}" == "ci-docker-compose.tmpl" ] || [ "${myfile}" == "ci-nginx-proxy-conf.tmpl" ]; then
         cp ./${myfile} /etc/confd/templates/${myfile}
     else
         cp ./${myfile} /etc/confd/conf.d/${myfile}
@@ -113,6 +113,7 @@ etcdctl set /services/pggerrit/postgres_db reviewdb
 
 etcdctl set /services/gerrit/image openfrontier/gerrit
 etcdctl set /services/gerrit/name gerrit
+etcdctl set /services/gerrit/host_ip 192.168.1.141
 etcdctl set /services/gerrit/weburl http://192.168.1.141/gerrit
 etcdctl set /services/gerrit/httpd_listenurl proxy-http://*:8080/gerrit
 etcdctl set /services/gerrit/database_type postgresql
@@ -145,19 +146,19 @@ etcdctl set /services/redmine/image sameersbn/redmine
 # nginxproxy service: this is a nginx container, the main nginx reverse proxy application
 etcdctl set /services/nginxproxy/image nginx
 etcdctl set /services/nginxproxy/name nginx-proxy
-etcdctl set /services/nginxproxy/volumes ~/nginx-docker/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+etcdctl set /services/nginxproxy/volumes /etc/confd/output/ci-nginx-proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
 echo
 }
 
 function generate_config_file() {
-# confd program will use config files in /etc/confd/{templates,conf.d} to generate the /tmp/docker-compose.yml file needed by this project
+# confd program will use config files in /etc/confd/{templates,conf.d} to generate the /etc/confd/output/docker-compose.yml file needed by this project
 # Please check the files in /etc/confd/templates and /etc/confd/conf.d for more details
-echo "(3) Using confd to gerenate a docker-compose.yml file in /tmp."
+echo "(3) Using confd to gerenate a docker-compose.yml file in /etc/confd/output/"
 echo
 
 confd -onetime -backend etcd -node 127.0.0.1:4001
 echo
-echo "Please check if /tmp/docker-compose.yml generated as expected and run docker-compoase against it."
+echo "Please check if /etc/confd/output/docker-compose.yml generated as expected and run docker-compoase against it."
 }
 
 prepare_environment

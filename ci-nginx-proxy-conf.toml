@@ -1,0 +1,9 @@
+[template]
+src = "ci-nginx-proxy-conf.tmpl"
+dest = "/etc/confd/output/ci-nginx-proxy.conf"
+keys = [
+"/services/gerrit/name",
+"/services/gerrit/host_ip",
+"/services/jenkins/name",
+"/services/redmine/name",
+]
