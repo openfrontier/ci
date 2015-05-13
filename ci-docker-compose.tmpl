@@ -66,8 +66,8 @@ redmine:
     - DB_NAME={{getv "/services/redmine/db_name"}}
     - DB_USER={{getv "/services/redmine/db_user"}}
     - DB_PASS={{getv "/services/redmine/db_pass"}}
-    - REDMINE_RELATIVE_URL_ROOT={{getv "/services/redmine/redmin_relative_url_root"}}
-    - REDMINE_FETCH_COMMITS={{getv "/services/redmine/redmin_fetch_commits"}}
+    - REDMINE_RELATIVE_URL_ROOT={{getv "/services/redmine/relative_url_root"}}
+    - REDMINE_FETCH_COMMITS={{getv "/services/redmine/fetch_commits"}}
   volumes_from:
     - gerrit
 nginxproxy:
@@ -82,4 +82,3 @@ nginxproxy:
     - redmine
   volumes:
     - {{getv "/services/nginxproxy/volumes"}}
-

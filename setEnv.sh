@@ -46,10 +46,10 @@ else
     ln -s /usr/local/docker-compose /usr/bin/docker-compose
 fi
 
-# Retrieve the docker-compose template files and put them in /etc/confd/{templates,conf.d} 
+# Retrieve the docker-compose and nginx-proxy-conf template files and put them in /etc/confd/{templates,conf.d} 
 echo "Retrieving docker-compose template files"
 mkdir -p /etc/confd/{templates,conf.d,output}
-for myfile in ci-docker-compose.yml.example ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml
+for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml
 do
 if [ -e "./${myfile}" ]; then
     if [ "${myfile}" == "ci-docker-compose.tmpl" ] || [ "${myfile}" == "ci-nginx-proxy-conf.tmpl" ]; then
@@ -94,59 +94,59 @@ do
 done
 
 # datagerrit service: this is a data conainter serving the gerrit container
-etcdctl set /services/datagerrit/image kfmaster/datagerrit
-etcdctl set /services/datagerrit/name datagerrit
+printf "%-40s %s" "/services/datagerrit/image:"; etcdctl set /services/datagerrit/image kfmaster/datagerrit
+printf "%-40s %s" "/services/datagerrit/name:" ; etcdctl set /services/datagerrit/name datagerrit
 
 # datajenkins service: this is a data conainter serving the jenkins container
-etcdctl set /services/datajenkins/image kfmaster/datajenkins
-etcdctl set /services/datajenkins/name datajenkins
+printf "%-40s %s" "/services/datajenkins/image:"; etcdctl set /services/datajenkins/image kfmaster/datajenkins
+printf "%-40s %s" "/services/datajenkins/name: "; etcdctl set /services/datajenkins/name datajenkins
 
 # pggerrit service: this is a postgres container serving the gerrit container
-etcdctl set /services/pggerrit/image postgres
-etcdctl set /services/pggerrit/name pg-gerrit
-etcdctl set /services/pggerrit/postgres_user gerrit2
-etcdctl set /services/pggerrit/postgres_password gerrit
-etcdctl set /services/pggerrit/postgres_db reviewdb
+printf "%-40s %s" "/services/pggerrit/image:";  etcdctl set /services/pggerrit/image postgres
+printf "%-40s %s" "/services/pggerrit/name:";   etcdctl set /services/pggerrit/name pg-gerrit
+printf "%-40s %s" "/services/pggerrit/postgres_user:";      etcdctl set /services/pggerrit/postgres_user gerrit2
+printf "%-40s %s" "/services/pggerrit/postgres_password:";  etcdctl set /services/pggerrit/postgres_password gerrit
+printf "%-40s %s" "/services/pggerrit/postgres_db:";        etcdctl set /services/pggerrit/postgres_db reviewdb
 
 # gerrit service: this is a gerrit container, the main Gerrit Code Review application
 # please change the weburl, ldap_server and ldap_accountbase according to your environment
 
-etcdctl set /services/gerrit/image openfrontier/gerrit
-etcdctl set /services/gerrit/name gerrit
-etcdctl set /services/gerrit/host_ip 192.168.1.141
-etcdctl set /services/gerrit/weburl http://192.168.1.141/gerrit
-etcdctl set /services/gerrit/httpd_listenurl proxy-http://*:8080/gerrit
-etcdctl set /services/gerrit/database_type postgresql
-etcdctl set /services/gerrit/auth_type LDAP
-etcdctl set /services/gerrit/ldap_server 192.168.1.250
-etcdctl set /services/gerrit/ldap_accountbase cn=users,cn=accounts,dc=pod0,dc=nethsd,dc=net
+printf "%-40s %s" "/services/gerrit/image:"; etcdctl set /services/gerrit/image openfrontier/gerrit
+printf "%-40s %s" "/services/gerrit/name:";  etcdctl set /services/gerrit/name gerrit
+printf "%-40s %s" "/services/gerrit/database_type:"; etcdctl set /services/gerrit/database_type postgresql
+printf "%-40s %s" "/services/gerrit/auth_type:";     etcdctl set /services/gerrit/auth_type LDAP
+printf "%-40s %s" "/services/gerrit/httpd_listenurl:"; etcdctl set /services/gerrit/httpd_listenurl proxy-http://*:8080/gerrit
+printf "%-40s %s" "/services/gerrit/host_ip:"; etcdctl set /services/gerrit/host_ip 192.168.0.200
+printf "%-40s %s" "/services/gerrit/weburl:";  etcdctl set /services/gerrit/weburl http://192.168.0.200/gerrit
+printf "%-40s %s" "/services/gerrit/ldap_server:";      etcdctl set /services/gerrit/ldap_server 192.168.0.250
+printf "%-40s %s" "/services/gerrit/ldap_accountbase:"; etcdctl set /services/gerrit/ldap_accountbase cn=users,cn=accounts,dc=example,dc=com
 
 # jenkins service: this is a jenkins container, the main Jenkins application
-etcdctl set /services/jenkins/image openfrontier/jenkins
-etcdctl set /services/jenkins/name jenkins
-etcdctl set /services/jenkins/opts /jenkins
+printf "%-40s %s" "/services/jenkins/image:"; etcdctl set /services/jenkins/image openfrontier/jenkins
+printf "%-40s %s" "/services/jenkins/name:";  etcdctl set /services/jenkins/name jenkins
+printf "%-40s %s" "/services/jenkins/opts:";  etcdctl set /services/jenkins/opts /jenkins
 
 # pgredmine service: this is a postgres container, serving the redmine container
-etcdctl set /services/pgredmine/image postgres
-etcdctl set /services/pgredmine/name pg-redmine
-etcdctl set /services/pgredmine/postgres_user redmine
-etcdctl set /services/pgredmine/postgres_password redmine
-etcdctl set /services/pgredmine/postgres_db redmine
+printf "%-40s %s" "/services/pgredmine/image:"; etcdctl set /services/pgredmine/image postgres
+printf "%-40s %s" "/services/pgredmine/name:";  etcdctl set /services/pgredmine/name pg-redmine
+printf "%-40s %s" "/services/pgredmine/postgres_user:";     etcdctl set /services/pgredmine/postgres_user redmine
+printf "%-40s %s" "/services/pgredmine/postgres_password:"; etcdctl set /services/pgredmine/postgres_password redmine
+printf "%-40s %s" "/services/pgredmine/postgres_db:";       etcdctl set /services/pgredmine/postgres_db redmine
 
 # redmine service:  this is a redmine container, the main Redmine application
-etcdctl set /services/redmine/image sameersbn/redmine
-etcdctl set /services/redmine/name redmine
-etcdctl set /services/redmine/db_name redmine
-etcdctl set /services/redmine/db_user redmine
-etcdctl set /services/redmine/db_pass redmine
-etcdctl set /services/redmine/redmin_relative_url_root /redmine
-etcdctl set /services/redmine/redmin_fetch_commits hourly
-etcdctl set /services/redmine/image sameersbn/redmine
+printf "%-40s %s" "/services/redmine/image:"; etcdctl set /services/redmine/image sameersbn/redmine
+printf "%-40s %s" "/services/redmine/name:";  etcdctl set /services/redmine/name redmine
+printf "%-40s %s" "/services/redmine/db_name:"; etcdctl set /services/redmine/db_name redmine
+printf "%-40s %s" "/services/redmine/db_user:"; etcdctl set /services/redmine/db_user redmine
+printf "%-40s %s" "/services/redmine/db_pass:"; etcdctl set /services/redmine/db_pass redmine
+printf "%-40s %s" "/services/redmine/fetch_commits:";     etcdctl set /services/redmine/fetch_commits hourly
+printf "%-40s %s" "/services/redmine/relative_url_root:"; etcdctl set /services/redmine/relative_url_root /redmine
 
 # nginxproxy service: this is a nginx container, the main nginx reverse proxy application
-etcdctl set /services/nginxproxy/image nginx
-etcdctl set /services/nginxproxy/name nginx-proxy
-etcdctl set /services/nginxproxy/volumes /etc/confd/output/ci-nginx-proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+printf "%-40s %s" "/services/nginxproxy/image:";   etcdctl set /services/nginxproxy/image nginx
+printf "%-40s %s" "/services/nginxproxy/name:";    etcdctl set /services/nginxproxy/name nginx-proxy
+printf "%-40s %s" "/services/nginxproxy/volumes:"; etcdctl set /services/nginxproxy/volumes /etc/confd/output/nginx-proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+
 echo
 }
 
