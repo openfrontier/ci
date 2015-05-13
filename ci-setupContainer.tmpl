@@ -1,0 +1,107 @@
+#!/bin/bash
+set -e
+
+GERRIT_WEBURL={{getv "/services/gerrit/weburl"}}
+HTTP_UID={{getv "/services/gerrit/admin_uid"}}
+HTTP_PWD={{getv "/services/gerrit/admin_password"}}
+SSH_KEY_DIR={{getv "/services/gerrit/ssh_pubkey_file"}}
+
+GERRIT_ADMIN_UID={{getv "/services/gerrit/admin_uid"}}
+GERRIT_ADMIN_EMAIL={{getv "/services/gerrit/admin_email"}}
+CHECKOUT_DIR=./git
+
+JENKINS_NAME=`docker ps |grep {{getv "/services/jenkins/name"}} | grep -v "/services/datajenkins/name"}} |head -1 |awk '{print $NF}'`
+GERRIT_NAME=`docker ps |grep {{getv "/services/gerrit/name"}} | grep -v "/services/datagerrit/name"}} |head -1 |awk '{print $NF}'`
+GERRIT_SSH_HOST={{getv "/services/gerrit/host_ip"}}
+GERRIT_WEBURL={{getv "/services/gerrit/weburl"}}
+JENKINS_WEBURL={{getv "/services/jenkins/weburl"}}
+
+#Remove appended '/' if existed.
+GERRIT_WEBURL=${GERRIT_WEBURL%/}
+
+# Do first time login.
+RESPONSE=$(curl -X POST -d "username=${HTTP_UID}" -d "password=${HTTP_PWD}" ${GERRIT_WEBURL}/login 2>/dev/null)
+[ -z "${RESPONSE}" ] || { echo "${RESPONSE}" ; exit 1; }
+
+# Add ssh-key
+cat "${SSH_KEY_DIR}" | curl --data @- --user "${HTTP_UID}:${HTTP_PWD}"  ${GERRIT_WEBURL}/a/accounts/self/sshkeys
+
+
+#create ssh key.
+##check key existence before create one, if exists, skip; if not, create one; have to set +e to allow the script continues if a command fails;
+set +e
+docker exec ${JENKINS_NAME} ls /var/jenkins_home/.ssh/id_rsa  1>/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    docker exec ${JENKINS_NAME} ssh-keygen -q -N '' -t rsa  -f /var/jenkins_home/.ssh/id_rsa
+else
+    echo "ssh key already exists at /var/jenkins_home/.ssh/id_rsa"
+fi
+
+#gather server rsa key
+## There are better ways of doing this, right now, just delete lines containing the Gerrit host from the known_hosts file
+[ -f ~/.ssh/known_hosts ] && cp ~/.ssh/known_hosts ~/.ssh/known_hosts.bak
+sed -i '/'"${GERRIT_SSH_HOST}"'/d ' ~/.ssh/known_hosts
+ssh-keyscan -p 29418 -t rsa ${GERRIT_SSH_HOST} > ~/.ssh/known_hosts
+
+#create jenkins account in gerrit.
+##check account existence before create one.
+docker exec ${JENKINS_NAME} cat /var/jenkins_home/.ssh/id_rsa.pub | ssh -p 29418 ${GERRIT_ADMIN_UID}@${GERRIT_SSH_HOST} gerrit set-account --active "'Jenkins Server'"
+if [ $? -ne 0 ]; then
+    docker exec ${JENKINS_NAME} cat /var/jenkins_home/.ssh/id_rsa.pub | ssh -p 29418 ${GERRIT_ADMIN_UID}@${GERRIT_SSH_HOST} gerrit create-account --group "'Non-Interactive Users'" --full-name "'Jenkins Server'" --ssh-key - jenkins
+else
+    echo "The Jenkins Server user already exists on the Gerrits."
+fi
+
+#checkout project.config from All-Project.git, if it has not done so.
+if [ ! -d ${CHECKOUT_DIR} ]; then
+    mkdir ${CHECKOUT_DIR}
+else
+    echo "The checkout directory ${CHECKOUT_DIR} already exists."
+fi
+
+git init ${CHECKOUT_DIR}
+cd ${CHECKOUT_DIR}
+git config user.name  ${GERRIT_ADMIN_UID}
+git config user.email ${GERRIT_ADMIN_EMAIL}
+
+git remote -v |grep -q ${GERRIT_SSH_HOST}
+if [ $? -ne 0 ]; then
+    git remote add origin ssh://${GERRIT_ADMIN_UID}@${GERRIT_SSH_HOST}:29418/All-Projects 
+    git fetch -q origin refs/meta/config:refs/remotes/origin/meta/config
+    git checkout meta/config
+else
+    echo "Git remote already exists, see following git remote config:"
+    git remote -v
+fi
+
+#add label.Verified
+git config -f project.config label.Verified.function MaxWithBlock
+git config -f project.config --add label.Verified.defaultValue  0
+git config -f project.config --add label.Verified.value "-1 Fails"
+git config -f project.config --add label.Verified.value "0 No score"
+git config -f project.config --add label.Verified.value "+1 Verified"
+##commit and push back
+git commit -a -m "Added label - Verified"
+git push origin meta/config:meta/config
+
+#Change global access right
+##Remove anonymous access right.
+git config -f project.config --unset access.refs/*.read "group Anonymous Users"
+##add Jenkins access and verify right
+git config -f project.config --add access.refs/heads/*.read "group Non-Interactive Users"
+git config -f project.config --add access.refs/tags/*.read "group Non-Interactive Users"
+git config -f project.config --add access.refs/heads/*.label-Code-Review "-1..+1 group Non-Interactive Users"
+git config -f project.config --add access.refs/heads/*.label-Verified "-1..+1 group Non-Interactive Users"
+##add project owners' right to add verify flag
+git config -f project.config --add access.refs/heads/*.label-Verified "-1..+1 group Project Owners"
+##commit and push back
+git commit -a -m "Change access right." -m "Add access right for Jenkins. Remove anonymous access right"
+git push origin meta/config:meta/config
+
+cd -
+rm -rf ${CHECKOUT_DIR}
+
+#Setup gerrit-trigger plugin and restart jenkins
+docker exec ${JENKINS_NAME} jenkins-setup.sh ${GERRIT_NAME} ${GERRIT_WEBURL} ${JENKINS_WEBURL}
+docker restart ${JENKINS_NAME}
+
