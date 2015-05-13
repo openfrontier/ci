@@ -6,7 +6,7 @@
 # This script contains 3 steps: 
 # (1) prepare_environment: to install pre-requisites software and config files;
 # (2) set_varibles:  to set variables needed for this project;
-# (3) generate_config_file:  to generate a /etc/confd/conf.d/docker-compose.yml file for this project;
+# (3) generate_config_file:  to generate a /tmp/docker-compose.yml file for this project;
 #
 
 function prepare_environment() {
@@ -49,7 +49,7 @@ fi
 # Retrieve the docker-compose template files and put them in /etc/confd/{templates,conf.d} 
 echo "Retrieving docker-compose template files"
 mkdir -p /etc/confd/{templates,conf.d}
-for myfile in docker-compose.yml.example docker-compose.tmpl docker-compose.toml
+for myfile in ci-docker-compose.yml.example ci-docker-compose.tmpl ci-docker-compose.toml
 do
 if [ -e "./${myfile}" ]; then
     if [ "${myfile}" == "docker-compose.tmpl" ]; then

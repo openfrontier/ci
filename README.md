@@ -46,6 +46,8 @@ Create a coreos/etcd as a sidekick container to store configuration variables
     ## To destroy/remove the containers:
     docker-compose rm
 
+    ## You can refer to "docker-compose -h" for more options
+
 ## Following are instructions if you do not want to use docker-compose
 
 ## Get docker images.
