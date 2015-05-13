@@ -22,7 +22,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     ## Some postinstall scripts are generated in /etc/confd/output/postinstall;
     ## You may change the output location in ci-docker-compose.toml and other .toml config files.
 
-    sh ~/ci/setEnv.sh
+    cd ~/ci
+    sh ./setEnv.sh
     
     ## If you don't want to use this setEnv.sh script,  you can simply use the 
     ## docker-compose.yml.example and nginx-proxy.conf.example as a template, and change 
