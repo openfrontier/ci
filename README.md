@@ -13,33 +13,41 @@ Create a data container based on busybox to provide volume for the Gerrit contai
 
 Create a data container based on busybox to provide volume for the Jenkins containter
 
-Create a coreos/etcd as a sidekick container to store configuration variables 
+Create a a sidekick container based on coreos/etcd to store configuration variables and generate the docker-compose.yml file 
 
-## Create docker-compose.yml file 
-    ## You can customize your local variables in this setEnv.sh, those varibles are set by etcdctl command in the script; 
-    ## By default, /etc/confd/output/docker-compose.yml will be generated after run this script; 
-    ## You may change the docker-compose.yml file location in /etc/confd/conf.d/ci-docker-compose.toml config file.
+## Create your docker-compose.yml and nginx-proxy.conf file 
+    ## You can customize your local variables in setEnv.sh, those varibles are set by etcdctl command in that script; 
+    ## By default, /etc/confd/output/docker-compose.yml will be generated after run setEnv.sh script; 
+    ## A /etc/confd/output/nginx-proxy.conf will also be gernerated by setEnv.sh script;
+    ## You may change the output location in ci-docker-compose.toml and ci-nginx-proxy-conf.toml config file.
+
     sh ~/ci/setEnv.sh
     
-    ## Or you can simply use the ci-docker-compose.yml.example as a template, and change the parameters in it based on your environment;
-    ## Following parameters are most likely need be changed:
-    WEBURL              # Change the IP address to your docker host ip;
-    LDAP_SERVER         # Change the IP address to your LDAP server ip;
-    LDAP_ACCOUNTBASE    # Change the base to your LDAP account base, this example is based on a freeipa LDAP server with domain "example.com";
+    ## If you don't want to use this setEnv.sh script,  you can simply use the 
+    ## docker-compose.yml.example and nginx-proxy.conf.example as a template, and change 
+    ## the parameters in it based on your environment;
+    ## Following parameters are most likely need be changed in your docker-compose.yml and nginx-proxy.conf:
+   
+    WEBURL              # Change the IP address to your docker host ip in your docker-compose.yml;
+    LDAP_SERVER         # Change the IP address to your LDAP server ip in your docker-compose.yml;
+    LDAP_ACCOUNTBASE    # Change the search base to your LDAP account base in your docker-compose.yml;
 
-## Use docker-compose to start,stop or monitor the containers in this project
+    server_name         # Change the IP address to your docker host ip or hostname in your nginx-proxy.conf;
+
+## Use docker-compose to start,stop or control the containers in this project
     ## cd to the directory where the docker-compose.yml is generated; 
     ## by default it is in /etc/confd/output, you may copy it to anywhere you want and cd to that directory;
-    ## or you can use the "docker-compose -f <file> <command_options>" to specify its location;
+    ## or you can use the "docker-compose -f <file> <docker_command_options>" to specify its location;
     ## then run following command to bring up all containers:
-    docker-compose up
+
+    docker-compose up    # or: "docker-compose -f /etc/confd/output/docker-compose.yml up"
 
     ## If you want to run the containers in detached mode, add a -d switch:
     docker-compose up -d
 
     ## To check logs:
     docker-compose logs  
-    or:  docker-compose logs <container_name>  (for example, container_name gerrit,  you can find its logs by `docker-compose logs gerrit` 
+    # or:  docker-compose logs <container_name>  (for example, you can view one container's log  by "docker-compose logs gerrit" 
 
     ## To check conainters status:
     docker-compose ps
