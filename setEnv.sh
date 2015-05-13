@@ -52,10 +52,10 @@ mkdir -p /etc/confd/{templates,conf.d}
 for myfile in docker-compose.yml.example docker-compose.tmpl docker-compose.toml
 do
 if [ -e "./${myfile}" ]; then
-    if [ "${myfile}" == "docker-compose.tmpl" ]; then
-        cp ./${myfile} /etc/confd/templates/${myfile}
-    else
+    if [ "${myfile}" == "docker-compose.toml" ]; then
         cp ./${myfile} /etc/confd/conf.d/${myfile}
+    else
+        cp ./${myfile} /etc/confd/templates/${myfile}
     fi
 else
     echo "Can not locate ${myfile} in current directory, please put it in current directory."
