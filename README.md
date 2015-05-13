@@ -32,6 +32,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     LDAP_SERVER         # Change the IP address to your LDAP server ip in your docker-compose.yml;
     LDAP_ACCOUNTBASE    # Change the search base to your LDAP account base in your docker-compose.yml;
 
+    ## See more parameters in the "MOST LIKELY NEED CHANGE" section in the setEnv.sh for details; 
+
     server_name         # Change the IP address to your docker host ip or hostname in your nginx-proxy.conf;
 
 ## Use docker-compose to start,stop or control the containers in this project
@@ -59,6 +61,12 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     docker-compose rm
 
     ## You can refer to "docker-compose -h" for more options
+
+## After containers are up and running and you can login using your gerrit admin user, run following postinstall scripts
+   ## To setup the intial login in Gerrit and link jenkins with gerrit:
+   sh etc/confd/output/postinstall/S01setupContainer.sh
+
+   ## TODO: import a demo project
 
 ## Following are instructions if you do not want to use docker-compose
 
