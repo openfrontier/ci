@@ -64,7 +64,7 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
 ## After containers are up and running and you can login using your gerrit admin user, run following postinstall scripts
    ## To setup the intial login in Gerrit and link jenkins with gerrit:
-   sh etc/confd/output/postinstall/S01setupContainer.sh
+   bash /etc/confd/output/postinstall/S01setupContainer.sh
 
    ## TODO: import a demo project
 
