@@ -16,18 +16,22 @@ Create a data container based on busybox to provide volume for the Jenkins conta
 Create a coreos/etcd as a sidekick container to store configuration variables 
 
 ## Create docker-compose.yml file 
-    ## You can customize your variables in the setEnv.sh, then run setEnv.sh, it will generate a docker-compose.yml file similar to the docker-compose.yml.example 
-    ## The default location of the gerenated docker-compose.yml file is in /tmp, you may change the location in docker-compose.toml config file.
-    ~/ci/setEnv.sh
+    ## You can customize your local variables in this setEnv.sh, those varibles are set by etcdctl command in the script; 
+    ## By default, /etc/confd/output/docker-compose.yml will be generated after run this script; 
+    ## You may change the docker-compose.yml file location in /etc/confd/conf.d/ci-docker-compose.toml config file.
+    sh ~/ci/setEnv.sh
     
-    ## Or you can use the docker-compose.yml.example as a template, and change the parameters in it based on your environment,
+    ## Or you can simply use the ci-docker-compose.yml.example as a template, and change the parameters in it based on your environment;
     ## Following parameters are most likely need be changed:
     WEBURL              # Change the IP address to your docker host ip;
     LDAP_SERVER         # Change the IP address to your LDAP server ip;
     LDAP_ACCOUNTBASE    # Change the base to your LDAP account base, this example is based on a freeipa LDAP server with domain "example.com";
 
 ## Use docker-compose to start,stop or monitor the containers in this project
-    ## cd to the directory where the docker-compose.yml is generated (by default it is in /tmp), run following commands:
+    ## cd to the directory where the docker-compose.yml is generated; 
+    ## by default it is in /etc/confd/output, you may copy it to anywhere you want and cd to that directory;
+    ## or you can use the "docker-compose -f <file> <command_options>" to specify its location;
+    ## then run following command to bring up all containers:
     docker-compose up
 
     ## If you want to run the containers in detached mode, add a -d switch:
@@ -45,6 +49,8 @@ Create a coreos/etcd as a sidekick container to store configuration variables
 
     ## To destroy/remove the containers:
     docker-compose rm
+
+    ## You can refer to "docker-compose -h" for more options
 
 ## Following are instructions if you do not want to use docker-compose
 
