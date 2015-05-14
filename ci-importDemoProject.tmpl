@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+DEMO_DATA_DIR="/etc/confd/data/demoProject01"
 HOST_NAME={{getv "/services/gerrit/host_ip"}}
 GERRIT_ADMIN_UID={{getv "/services/gerrit/admin_uid"}}
 GERRIT_ADMIN_PWD={{getv "/services/gerrit/admin_password"}}
@@ -10,7 +11,7 @@ JENKINS_WEBURL={{getv "/services/jenkins/weburl"}}
 GERRIT_SSH_HOST={{getv "/services/gerrit/host_ip"}}
 
 # Create demo project on Gerrit.
-curl -X PUT --user ${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD} -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < /etc/confd/data/ci/demoProject.json
+curl -X PUT --user ${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD} -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < ${DEMO_DATA_DIR}/demoProject.json
 
 # Setup local git.
 rm -rf ~/ci/demo
@@ -28,7 +29,7 @@ git fetch -q origin refs/meta/config:refs/remotes/origin/meta/config
 # Setup project access right.
 ## Registered users can change everything since it's just a demo project.
 git checkout meta/config
-cp /etc/confd/data/ci/groups .
+cp ${DEMO_DATA_DIR}/groups .
 git config -f project.config --add access.refs/*.owner "group Registered Users"
 git config -f project.config --add access.refs/*.read "group Registered Users"
 git add groups project.config
@@ -37,7 +38,7 @@ git push origin meta/config:meta/config
 
 # Import demoProject
 git checkout master
-tar xf /etc/confd/data/ci/demoProject.tar
+tar xf ${DEMO_DATA_DIR}/demoProject.tar
 git add demo
 git commit -m "Init project"
 git push origin
@@ -46,4 +47,4 @@ git push origin
 cd -
 rm -rf ~/ci/demo
 
-curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/config.xml
+curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ${DEMO_DATA_DIR}/config.xml

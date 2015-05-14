@@ -50,22 +50,27 @@ fi
 echo "Retrieving docker-compose template files"
 mkdir -p /etc/confd/{templates,conf.d,output}
 mkdir -p /etc/confd/output/postinstall
-mkdir -p /etc/confd/data/ci/
-for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml ci-setupContainer.tmpl ci-setupContainer.toml ci-importDemoProject.tmpl ci-importDemoProject.toml demoProject.json  demoProject.tar groups
+mkdir -p /etc/confd/data
+for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml ci-setupContainer.tmpl ci-setupContainer.toml ci-importDemoProject.tmpl ci-importDemoProject.toml
 do
     fileext=`echo ${myfile} |cut -d. -f2`
     if [ -e "./${myfile}" ]; then
         if [ "${fileext}" == "tmpl" ]; then
             cp ./${myfile} /etc/confd/templates/${myfile}
-        elif [ "${fileext}" == "toml" ]; then
-            cp ./${myfile} /etc/confd/conf.d/${myfile}
         else
-            cp ./${myfile} /etc/confd/data/ci/${myfile}
+            cp ./${myfile} /etc/confd/conf.d/${myfile}
         fi
     else
         echo "Can not locate ${myfile} in current directory, please put it in current directory."
     fi
 done
+
+if [ -d ./demoProject01 ]; then
+    cp -r ./demoProject01 /etc/confd/data/
+else
+    echo "Can not locate the demoProject01 directory, please copy it to current directory."
+fi
+
 
 # Start a sidekick container based on coreos/etcd to store user variables
 echo
