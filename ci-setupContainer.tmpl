@@ -103,5 +103,8 @@ rm -rf ${CHECKOUT_DIR}
 
 #Setup gerrit-trigger plugin and restart jenkins
 docker exec ${JENKINS_NAME} jenkins-setup.sh ${GERRIT_NAME} ${GERRIT_WEBURL} ${JENKINS_WEBURL}
-docker restart ${JENKINS_NAME}
+# It seems docker-compose will handle the restart more properly than docker in this case
+#docker restart ${JENKINS_NAME}
+docker-compose -f /etc/confd/output/docker-compose.yml restart jenkins
+docker-compose -f /etc/confd/output/docker-compose.yml restart nginxproxy
 

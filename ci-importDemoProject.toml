@@ -1,0 +1,12 @@
+[template]
+src = "ci-importDemoProject.tmpl"
+dest = "/etc/confd/output/postinstall/S02importDemoProject.sh"
+mode = "0755"
+keys = [
+"/services/gerrit/host_ip",
+"/services/gerrit/weburl",
+"/services/gerrit/admin_uid",
+"/services/gerrit/admin_password",
+"/services/gerrit/admin_email",
+"/services/jenkins/weburl",
+]

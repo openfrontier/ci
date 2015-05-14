@@ -49,25 +49,23 @@ fi
 # Retrieve the docker-compose and nginx-proxy-conf template files and put them in /etc/confd/{templates,conf.d} 
 echo "Retrieving docker-compose template files"
 mkdir -p /etc/confd/{templates,conf.d,output}
-<<<<<<< HEAD
 mkdir -p /etc/confd/output/postinstall
-for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml ci-setupContainer.tmpl ci-setupContainer.toml
-=======
-for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml
->>>>>>> e99a79ef523480a121fb7054d39b2b21e980ec0c
+mkdir -p /etc/confd/data/ci/
+for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml ci-setupContainer.tmpl ci-setupContainer.toml ci-importDemoProject.tmpl ci-importDemoProject.toml demoProject.json  demoProject.tar groups
 do
     fileext=`echo ${myfile} |cut -d. -f2`
     if [ -e "./${myfile}" ]; then
         if [ "${fileext}" == "tmpl" ]; then
             cp ./${myfile} /etc/confd/templates/${myfile}
-        else
+        elif [ "${fileext}" == "toml" ]; then
             cp ./${myfile} /etc/confd/conf.d/${myfile}
+        else
+            cp ./${myfile} /etc/confd/data/ci/${myfile}
         fi
     else
         echo "Can not locate ${myfile} in current directory, please put it in current directory."
     fi
 done
-
 
 # Start a sidekick container based on coreos/etcd to store user variables
 echo
@@ -119,7 +117,6 @@ printf "%-40s %s" "/services/pggerrit/postgres_db:";        etcdctl set /service
 
 printf "%-40s %s" "/services/gerrit/image:"; etcdctl set /services/gerrit/image openfrontier/gerrit
 printf "%-40s %s" "/services/gerrit/name:";  etcdctl set /services/gerrit/name gerrit
-<<<<<<< HEAD
 printf "%-40s %s" "/services/gerrit/database_type:";   etcdctl set /services/gerrit/database_type postgresql
 printf "%-40s %s" "/services/gerrit/auth_type:";       etcdctl set /services/gerrit/auth_type LDAP
 printf "%-40s %s" "/services/gerrit/httpd_listenurl:"; etcdctl set /services/gerrit/httpd_listenurl proxy-http://*:8080/gerrit
@@ -131,20 +128,11 @@ printf "%-40s %s" "/services/gerrit/admin_email:";       etcdctl set /services/g
 printf "%-40s %s" "/services/gerrit/ssh_pubkey_file:";   etcdctl set /services/gerrit/ssh_pubkey_file ~/.ssh/id_rsa.pub
 printf "%-40s %s" "/services/gerrit/host_ip:";           etcdctl set /services/gerrit/host_ip 192.168.0.200
 printf "%-40s %s" "/services/gerrit/weburl:";            etcdctl set /services/gerrit/weburl http://192.168.0.200/gerrit
-printf "%-40s %s" "/services/jenkins/weburl:";           etcdctl set /services/jenkins/weburl http://192.168.0.200/gerrit
-printf "%-40s %s" "/services/redmine/weburl:";           etcdctl set /services/redmine/weburl http://192.168.0.200/gerrit
+printf "%-40s %s" "/services/jenkins/weburl:";           etcdctl set /services/jenkins/weburl http://192.168.0.200/jenkins
+printf "%-40s %s" "/services/redmine/weburl:";           etcdctl set /services/redmine/weburl http://192.168.0.200/redmine
 printf "%-40s %s" "/services/gerrit/ldap_server:";       etcdctl set /services/gerrit/ldap_server 192.168.0.250
 printf "%-40s %s" "/services/gerrit/ldap_accountbase:";  etcdctl set /services/gerrit/ldap_accountbase cn=users,cn=accounts,dc=example,dc=com
 ###############    MOST LIKELY NEED CHANGE     #################
-=======
-printf "%-40s %s" "/services/gerrit/database_type:"; etcdctl set /services/gerrit/database_type postgresql
-printf "%-40s %s" "/services/gerrit/auth_type:";     etcdctl set /services/gerrit/auth_type LDAP
-printf "%-40s %s" "/services/gerrit/httpd_listenurl:"; etcdctl set /services/gerrit/httpd_listenurl proxy-http://*:8080/gerrit
-printf "%-40s %s" "/services/gerrit/host_ip:"; etcdctl set /services/gerrit/host_ip 192.168.0.200
-printf "%-40s %s" "/services/gerrit/weburl:";  etcdctl set /services/gerrit/weburl http://192.168.0.200/gerrit
-printf "%-40s %s" "/services/gerrit/ldap_server:";      etcdctl set /services/gerrit/ldap_server 192.168.0.250
-printf "%-40s %s" "/services/gerrit/ldap_accountbase:"; etcdctl set /services/gerrit/ldap_accountbase cn=users,cn=accounts,dc=example,dc=com
->>>>>>> e99a79ef523480a121fb7054d39b2b21e980ec0c
 
 # jenkins service: this is a jenkins container, the main Jenkins application
 printf "%-40s %s" "/services/jenkins/image:"; etcdctl set /services/jenkins/image openfrontier/jenkins

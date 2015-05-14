@@ -68,7 +68,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
    ## To setup the intial login in Gerrit and link jenkins with gerrit:
    bash /etc/confd/output/postinstall/S01setupContainer.sh
 
-   ## TODO: import a demo project
+   ## To import a demo project:
+   bash /etc/confd/output/postinstall/S02importDemoProject.sh
 
 ## Following are instructions if you do not want to use docker-compose
 

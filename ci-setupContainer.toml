@@ -1,6 +1,7 @@
 [template]
 src = "ci-setupContainer.tmpl"
 dest = "/etc/confd/output/postinstall/S01setupContainer.sh"
+mode = "0755"
 keys = [
 "/services/datagerrit/name",
 "/services/datajenkins/name",
