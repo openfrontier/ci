@@ -37,6 +37,9 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     ## See more parameters in the "MOST LIKELY NEED CHANGE" section in the setEnv.sh for details; 
 
     server_name         # Change the IP address to your docker host ip or hostname in your nginx-proxy.conf;
+    
+    ## For more information about etcd and confd, please check their document, following tutorial is a good start
+    https://www.digitalocean.com/community/tutorials/how-to-use-confd-and-etcd-to-dynamically-reconfigure-services-in-coreos
 
 ## Use docker-compose to start,stop or control the containers in this project
     ## cd to the directory where the docker-compose.yml is generated; 

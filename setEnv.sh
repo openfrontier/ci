@@ -48,23 +48,25 @@ fi
 
 # Retrieve the docker-compose and nginx-proxy-conf template files and put them in /etc/confd/{templates,conf.d} 
 echo "Retrieving docker-compose template files"
-mkdir -p /etc/confd/{templates,conf.d,output}
+mkdir -p /etc/confd/{templates,conf.d}
+mkdir -p /etc/confd/{output,data}
 mkdir -p /etc/confd/output/postinstall
-mkdir -p /etc/confd/data
-for myfile in ci-docker-compose.tmpl ci-docker-compose.toml ci-nginx-proxy-conf.tmpl ci-nginx-proxy-conf.toml ci-setupContainer.tmpl ci-setupContainer.toml ci-importDemoProject.tmpl ci-importDemoProject.toml
-do
-    fileext=`echo ${myfile} |cut -d. -f2`
-    if [ -e "./${myfile}" ]; then
-        if [ "${fileext}" == "tmpl" ]; then
-            cp ./${myfile} /etc/confd/templates/${myfile}
-        else
-            cp ./${myfile} /etc/confd/conf.d/${myfile}
-        fi
-    else
-        echo "Can not locate ${myfile} in current directory, please put it in current directory."
-    fi
-done
 
+# Copy confd templates 
+if [ -d ./confd-templates ]; then
+    cp  ./confd-templates/* /etc/confd/templates/
+else
+    echo "Can not locate the confd-templates directory, please copy it to current directory."
+fi
+
+# Copy confd conf.d files 
+if [ -d ./confd-conf.d ]; then
+    cp  ./confd-conf.d/* /etc/confd/conf.d/
+else
+    echo "Can not locate the confd-conf.d directory, please copy it to current directory."
+fi
+
+# Copy demo project data
 if [ -d ./demoProject01 ]; then
     cp -r ./demoProject01 /etc/confd/data/
 else
