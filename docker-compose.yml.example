@@ -81,4 +81,4 @@ nginxproxy:
     - jenkins
     - redmine
   volumes:
-    - ~/nginx-docker/nginx-proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+    - ~/ci/config/nginx-proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
