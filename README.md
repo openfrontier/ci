@@ -33,8 +33,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     ## By default, you can use user/password: gerrit/gerrit123 to login to Gerrit, this assumes such user/password exists in your LDAP  
     ## Please choose your own LDAP user/password and update your myci.conf before setup these containers
 
-    ## After above initial setup, if you want to change configuration parameters, you can run:
-    ## Then you can check if the configuration files are updated correctly then use docker-compose to restart some specific or all containers;
+    ## After above initial setup, if you want to change configuration parameters, you can run ./updateConf.sh;
+    ## Then you can check if the configuration files are updated correctly and use docker-compose to restart some specific or all containers;
  
     ./updateConf.sh
  
