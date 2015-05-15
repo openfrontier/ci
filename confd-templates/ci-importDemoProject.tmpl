@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-DEMO_DATA_DIR="/etc/confd/data/demoProject01"
+DEMO_DATA_DIR={{getv "/services/myci/project_data_dir"}}/demoProject01
 HOST_NAME={{getv "/services/gerrit/host_ip"}}
 GERRIT_ADMIN_UID={{getv "/services/gerrit/admin_uid"}}
 GERRIT_ADMIN_PWD={{getv "/services/gerrit/admin_password"}}

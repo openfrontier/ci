@@ -2,16 +2,23 @@
 # Written by kfmaster <fuhaiou@hotmail.com>
 # Initial written date: 2015-05-12
 #
-# Using etcd set variables used by confd to gernerate the docker-compose.yml file for the ci project
-# This script contains 3 steps: 
-# (1) prepare_environment: to install pre-requisites software and config files;
-# (2) set_varibles:  to set variables needed for this project;
-# (3) generate_config_file:  to generate a /etc/confd/output/docker-compose.yml file for this project;
+# Using etcd set variables and then using confd gernerate the docker-compose.yml and other files needed in this ci project
+# This script contains 2 steps: 
+# (1) prepare_environment: to install software pre-requisites, templates and project data files;
+# (2) set_varibles_and_generate_config_files:  to set variables needed for this project and generate all configuration files;
+#     by default, configuration files will be generated in /etc/confd/output/, you may change it in myci.conf;
 #
+
+confd_templates_dir=/etc/confd/templates
+confd_conf_dir=/etc/confd/conf.d
+
+project_config_dir=/etc/confd/output
+project_postinstall_dir=${project_config_dir}/postinstall
+project_data_dir=/etc/confd/data
 
 function prepare_environment() {
 # This script need etcdctl, confd, and docker-compose installed.
-echo "(1) Check if etcdctl, confd and docker-compoase is installed and a new coreos/etcd container is running..."
+echo "(1) Check if etcdctl, confd and docker-compose is installed and a coreos/etcd container is running..."
 echo
 
 if [ ! -d /usr/local ]; then
@@ -46,55 +53,47 @@ else
     ln -s /usr/local/docker-compose /usr/bin/docker-compose
 fi
 
-# Retrieve the docker-compose and nginx-proxy-conf template files and put them in /etc/confd/{templates,conf.d} 
+# Retrieve the docker-compose and nginx-proxy-conf template files and put them in ${confd_templates_dir} and ${confd_conf_dir}.
 echo "Retrieving docker-compose template files"
-mkdir -p /etc/confd/{templates,conf.d}
-mkdir -p /etc/confd/{output,data}
-mkdir -p /etc/confd/output/postinstall
+mkdir -p ${confd_templates_dir} ${confd_conf_dir}
 
 # Copy confd templates 
 if [ -d ./confd-templates ]; then
-    cp  ./confd-templates/* /etc/confd/templates/
+    cp  ./confd-templates/* ${confd_templates_dir}/
 else
-    echo "Can not locate the confd-templates directory, please copy it to current directory."
+    echo "Can not locate the confd-templates directory, please run myciSetup.sh from the same directory where the confd-templates directory exists."
+    exit 1
 fi
 
 # Copy confd conf.d files 
 if [ -d ./confd-conf.d ]; then
-    cp  ./confd-conf.d/* /etc/confd/conf.d/
+    cp  ./confd-conf.d/* ${confd_conf_dir}/
 else
-    echo "Can not locate the confd-conf.d directory, please copy it to current directory."
+    echo "Can not locate the confd-conf.d directory, please run myciSetup.sh from the same directory where the confd-conf.d directory exists."
+    exit 1
 fi
-
-# Copy demo project data
-if [ -d ./demoProject01 ]; then
-    cp -r ./demoProject01 /etc/confd/data/
-else
-    echo "Can not locate the demoProject01 directory, please copy it to current directory."
-fi
-
 
 # Start a sidekick container based on coreos/etcd to store user variables
 echo
 docker ps |grep -q coreos/etcd
 if [ $? -eq 0 ]; then
-    echo "There are coreos/etcd containers running, stop them to begin fresh"
-    docker ps |grep coreos/etcd |awk '{print $1}' |xargs docker stop
+    echo "There are coreos/etcd containers running, will try to use etcd listening on 127.0.0.1:4001 to store configuration variables."
+else
+    echo "Starting a coreos/etcd container to store configuration variables"
+    docker run \
+    -p 4001:4001 \
+    -d coreos/etcd
+    echo "Waiting 10 seconds for the etcd container to come up..."
+    sleep 10
 fi
 
-echo "Straring a coreos/etcd container to store variables"
-docker run \
--p 4001:4001 \
--d coreos/etcd
-
-echo "Waiting 10 seconds for the etcd container to come up..."
-sleep 10
 echo
 }
 
-function set_varibles() {
+function set_varibles_and_generate_config_files() {
 # First create naming spaces for etcd variables
-echo "(2) Set variables using etcdctl ..."
+# confd program will use config files in ${confd_templates_dir} and ${confd_conf_dir} to generate configuration files in the ${project_config_dir}.
+echo "(2) Set variables using etcdctl and using confd to generate configuration files..."
 echo
 for svc in /services /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
 do
@@ -108,22 +107,23 @@ if [ -e ./updateConf.sh ]; then
     bash ./updateConf.sh
 else
     echo "Can't find updateConf.sh in current directory, please make sure you run from the current directory where myciSetup.sh and updateConf.sh exist."
+    exit 1
 fi
     
-echo
-}
+mypid=`pidof etcdctl`
+# Check if there are etcdctl watch daemons running, if so, clean them up first
+if [ ! -z ${mypid} ]; then
+    pkill -9 etcdctl
+    sleep 1
+fi
 
-function generate_config_file() {
-# confd program will use config files in /etc/confd/{templates,conf.d} to generate the /etc/confd/output/docker-compose.yml file needed by this project
-# Please check the files in /etc/confd/templates and /etc/confd/conf.d for more details
-echo "(3) Using confd to gerenate a docker-compose.yml file in /etc/confd/output/"
+# Start a new etcdctl watch daemon
+(etcdctl exec-watch --recursive /services -- confd -onetime -backend etcd -node 127.0.0.1:4001 1>/dev/null 2>&1 &) &
 
-#confd -onetime -backend etcd -node 127.0.0.1:4001
+echo "Please check if ${project_config_dir}/docker-compose.yml generated as expected and run docker-compoase against it."
+echo "If all containers started and you can login Gerrit from your browser, run scripts in ${project_postinstall_dir} to import a demo project."
 echo
-echo "Please check if /etc/confd/output/docker-compose.yml generated as expected and run docker-compoase against it."
-echo "If all containers started and you can login Gerrit from your browser, run scripts in /etc/confd/output/postinstall/ to import a demo project."
 }
 
 prepare_environment
-set_varibles
-generate_config_file
+set_varibles_and_generate_config_files

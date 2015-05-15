@@ -81,4 +81,4 @@ nginxproxy:
     - jenkins
     - redmine
   volumes:
-    - {{getv "/services/nginxproxy/volumes"}}
+    - {{getv "/services/myci/project_config_dir"}}/{{getv "/services/nginxproxy/proxy_mapping"}}

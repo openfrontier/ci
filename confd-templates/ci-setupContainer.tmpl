@@ -105,6 +105,5 @@ rm -rf ${CHECKOUT_DIR}
 docker exec ${JENKINS_NAME} jenkins-setup.sh ${GERRIT_NAME} ${GERRIT_WEBURL} ${JENKINS_WEBURL}
 # It seems docker-compose will handle the restart more properly than docker in this case
 #docker restart ${JENKINS_NAME}
-docker-compose -f /etc/confd/output/docker-compose.yml restart jenkins
-docker-compose -f /etc/confd/output/docker-compose.yml restart nginxproxy
-
+docker-compose -f {{getv "/services/myci/project_config_dir"}}/docker-compose.yml restart jenkins
+docker-compose -f {{getv "/services/myci/project_config_dir"}}/docker-compose.yml restart nginxproxy

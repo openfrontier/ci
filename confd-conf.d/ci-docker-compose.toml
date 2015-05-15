@@ -2,6 +2,7 @@
 src = "ci-docker-compose.tmpl"
 dest = "/etc/confd/output/docker-compose.yml"
 keys = [
+"/services/myci/project_config_dir",
 "/services/datagerrit/image",
 "/services/datagerrit/name",
 "/services/datajenkins/image",
@@ -36,5 +37,5 @@ keys = [
 "/services/redmine/fetch_commits",
 "/services/nginxproxy/image",
 "/services/nginxproxy/name",
-"/services/nginxproxy/volumes",
+"/services/nginxproxy/proxy_mapping",
 ]

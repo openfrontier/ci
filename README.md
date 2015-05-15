@@ -23,7 +23,7 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     vi  ~/ci/myci.conf
 
     ## Then run the setup script to generate configuration files
-    ## By default,all configuration files will be generated in /etc/confd/output directory;
+    ## By default,all configuration files will be generated in ~/ci/config directory;
     ## TODO: This script will prompt you if you want to start all containers up and import a demo project;
     ## If you choose no, you can run the docker-compose and/or postinstall scripts later;
     ## See more details using the -h option
@@ -43,11 +43,11 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
 ## Use docker-compose to start,stop and control the containers in this project
     ## cd to the directory where the docker-compose.yml is generated; 
-    ## by default it is in /etc/confd/output, you may copy it to anywhere you want and cd to that directory;
+    ## by default it is in ~/ci/config, you may copy it to anywhere you want and cd to that directory;
     ## or you can use the "docker-compose -f <file> <docker_command_options>" to specify its location;
     ## then run following command to bring up all containers:
 
-    docker-compose up    # or: "docker-compose -f /etc/confd/output/docker-compose.yml up"
+    docker-compose up    # or for example: "docker-compose -f ~/ci/config/docker-compose.yml up"
 
     ## If you want to run the containers in detached mode, add a -d switch:
     docker-compose up -d
@@ -69,8 +69,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
 ## After containers are up and running and you can login using your gerrit admin user, run following postinstall scripts
     ## To setup the intial login in Gerrit and link jenkins with gerrit:
-    bash /etc/confd/output/postinstall/S00setupContainer.sh
+    bash ~/ci/config/postinstall/S00setupContainer.sh
 
     ## To import a demo project:
-    bash /etc/confd/output/postinstall/S01importDemoProject.sh
+    bash ~/ci/config/postinstall/S01importDemoProject.sh
 
