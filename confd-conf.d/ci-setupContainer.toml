@@ -1,6 +1,6 @@
 [template]
 src = "ci-setupContainer.tmpl"
-dest = "/etc/confd/output/postinstall/S01setupContainer.sh"
+dest = "/etc/confd/output/postinstall/S00setupContainer.sh"
 mode = "0755"
 keys = [
 "/services/datagerrit/name",

@@ -1,6 +1,6 @@
 [template]
 src = "ci-importDemoProject.tmpl"
-dest = "/etc/confd/output/postinstall/S02importDemoProject.sh"
+dest = "/etc/confd/output/postinstall/S01importDemoProject.sh"
 mode = "0755"
 keys = [
 "/services/gerrit/host_ip",
