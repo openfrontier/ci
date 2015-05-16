@@ -40,6 +40,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
     ## For more information about etcd and confd, please check their document,following tutorial is a good start
     https://www.digitalocean.com/community/tutorials/how-to-use-confd-and-etcd-to-dynamically-reconfigure-services-in-coreos
 
+## If you choose not to bring up containers and/or run postinstall scripts when you run myciSetup.sh, you can do them individually using following instructions
+
 ## Use docker-compose to start,stop and control the containers in this project
     ## cd to the directory where the docker-compose.yml is generated; 
     ## by default it is in ~/ci/config, you may copy it to anywhere you want and cd to that directory;
@@ -66,7 +68,7 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
     ## You can refer to "docker-compose -h" for more options
 
-## After containers are up and running and you can login using your gerrit admin user, run following postinstall scripts
+## Following are postinstall scripts
     ## To setup the intial login in Gerrit and link jenkins with gerrit:
     bash ~/ci/config/postinstall/S00setupContainer.sh
 
