@@ -24,6 +24,12 @@ RESPONSE=$(curl -X POST -d "username=${HTTP_UID}" -d "password=${HTTP_PWD}" ${GE
 [ -z "${RESPONSE}" ] || { echo "${RESPONSE}" ; exit 1; }
 
 # Add ssh-key
+# Create a pubkey if it doesn't exist
+if [ ! -e ${SSH_KEY_DIR} ]; then
+    newkey=$(echo ${SSH_KEY_DIR} | sed 's/id_rsa.pub/id_rsa/')
+    ssh-keygen -t rsa -N '' -f ${newkey}
+fi
+
 cat "${SSH_KEY_DIR}" | curl --data @- --user "${HTTP_UID}:${HTTP_PWD}"  ${GERRIT_WEBURL}/a/accounts/self/sshkeys
 
 
@@ -102,7 +108,7 @@ cd -
 rm -rf ${CHECKOUT_DIR}
 
 #Setup gerrit-trigger plugin and restart jenkins
-docker exec ${JENKINS_NAME} jenkins-setup.sh ${GERRIT_NAME} ${GERRIT_WEBURL} ${JENKINS_WEBURL}
+docker exec ${JENKINS_NAME} /usr/local/bin/jenkins-setup.sh ${GERRIT_NAME} ${GERRIT_WEBURL} ${JENKINS_WEBURL}
 # It seems docker-compose will handle the restart more properly than docker in this case
 #docker restart ${JENKINS_NAME}
 docker-compose -f {{getv "/services/myci/project_config_dir"}}/docker-compose.yml restart jenkins

@@ -1,8 +1,62 @@
 #!/bin/bash
 
+CONFD_TEMPLATES_DIR=/etc/confd/templates
+CONFD_CONF_DIR=/etc/confd/conf.d
+
 project_config_dir=/etc/confd/output
 project_postinstall_dir=${project_config_dir}/postinstall
 project_data_dir=/etc/confd/data
+
+# Retrieve the docker-compose and nginx-proxy-conf template files and put them in ${CONFD_TEMPLATES_DIR} and ${CONFD_CONF_DIR}.
+echo "Retrieving confd template resource files"
+if [ ! -d ${CONFD_TEMPLATES_DIR} ]; then
+    mkdir -p ${CONFD_TEMPLATES_DIR} 
+fi
+
+if [ ! -d ${CONFD_CONF_DIR} ]; then
+    mkdir -p ${CONFD_CONF_DIR} 
+fi
+
+
+# Copy confd templates 
+if [ -d ./confd-templates ]; then
+    cp  ./confd-templates/* ${CONFD_TEMPLATES_DIR}/
+else
+    echo "Can not locate the confd-templates directory, please run myciSetup.sh from the same directory where the confd-templates directory exists."
+    exit 1
+fi
+
+# Copy confd conf.d files 
+if [ -d ./confd-conf.d ]; then
+    cp  ./confd-conf.d/* ${CONFD_CONF_DIR}/
+else
+    echo "Can not locate the confd-conf.d directory, please run myciSetup.sh from the same directory where the confd-conf.d directory exists."
+    exit 1
+fi
+
+# Start a sidekick container based on coreos/etcd to store user variables if etcd is not running
+docker ps |grep -q coreos/etcd
+if [ $? -eq 0 ]; then
+    echo "There are coreos/etcd containers running, will try to use etcd listening on 127.0.0.1:4001 to store configuration variables."
+else
+    echo "Starting a coreos/etcd container to store configuration variables"
+    docker run \
+    -p 4001:4001 \
+    -d coreos/etcd
+    echo "Waiting 10 seconds for the etcd container to come up..."
+    sleep 10
+fi
+
+# First create naming spaces for etcd variables
+# confd program will use config files in ${CONFD_TEMPLATES_DIR} and ${CONFD_CONF_DIR} to generate configuration files in the ${project_config_dir}.
+for svc in /services /services/myci /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
+do
+    etcdctl ls $svc 1> /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        etcdctl mkdir $svc
+    fi
+done
+
 
 # Gernerate a temporary script for setting etcd key/value pairs based on myci.conf
 outfile1=tmp1_etcdctl.sh
@@ -68,6 +122,7 @@ if [ ! -d ${project_data_dir}/demoProject01 ]; then
         exit 1
     fi
 fi
+
 
 
 # Run etcdctl to update all key/value pairs, this may trigger automated etcdctl exec-watch script which will call confd to update configuration files; 

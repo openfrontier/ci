@@ -9,8 +9,8 @@
 #     by default, configuration files will be generated in /etc/confd/output/, you may change it in myci.conf;
 #
 
-confd_templates_dir=/etc/confd/templates
-confd_conf_dir=/etc/confd/conf.d
+CONFD_TEMPLATES_DIR=/etc/confd/templates
+CONFD_CONF_DIR=/etc/confd/conf.d
 
 project_config_dir=/etc/confd/output
 project_postinstall_dir=${project_config_dir}/postinstall
@@ -53,56 +53,14 @@ else
     ln -s /usr/local/docker-compose /usr/bin/docker-compose
 fi
 
-# Retrieve the docker-compose and nginx-proxy-conf template files and put them in ${confd_templates_dir} and ${confd_conf_dir}.
-echo "Retrieving docker-compose template files"
-mkdir -p ${confd_templates_dir} ${confd_conf_dir}
-
-# Copy confd templates 
-if [ -d ./confd-templates ]; then
-    cp  ./confd-templates/* ${confd_templates_dir}/
-else
-    echo "Can not locate the confd-templates directory, please run myciSetup.sh from the same directory where the confd-templates directory exists."
-    exit 1
-fi
-
-# Copy confd conf.d files 
-if [ -d ./confd-conf.d ]; then
-    cp  ./confd-conf.d/* ${confd_conf_dir}/
-else
-    echo "Can not locate the confd-conf.d directory, please run myciSetup.sh from the same directory where the confd-conf.d directory exists."
-    exit 1
-fi
-
-# Start a sidekick container based on coreos/etcd to store user variables
-echo
-docker ps |grep -q coreos/etcd
-if [ $? -eq 0 ]; then
-    echo "There are coreos/etcd containers running, will try to use etcd listening on 127.0.0.1:4001 to store configuration variables."
-else
-    echo "Starting a coreos/etcd container to store configuration variables"
-    docker run \
-    -p 4001:4001 \
-    -d coreos/etcd
-    echo "Waiting 10 seconds for the etcd container to come up..."
-    sleep 10
-fi
-
 echo
 }
 
 function set_varibles_and_generate_config_files() {
-# First create naming spaces for etcd variables
-# confd program will use config files in ${confd_templates_dir} and ${confd_conf_dir} to generate configuration files in the ${project_config_dir}.
 echo "(2) Set variables using etcdctl and using confd to generate configuration files..."
 echo
-for svc in /services /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
-do
-    etcdctl ls $svc 1> /dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        etcdctl mkdir $svc
-    fi
-done
 
+# Most procedures for gernerating and updating confd config files are in the updateConf.sh
 if [ -e ./updateConf.sh ]; then
     bash ./updateConf.sh
 else
@@ -110,8 +68,8 @@ else
     exit 1
 fi
     
+# Check if there are etcdctl watch daemons running, if so, clean them up first, then start a etcd watch daemon
 mypid=`pidof etcdctl`
-# Check if there are etcdctl watch daemons running, if so, clean them up first
 if [ ! -z ${mypid} ]; then
     pkill -9 etcdctl
     sleep 1
@@ -120,10 +78,115 @@ fi
 # Start a new etcdctl watch daemon
 (etcdctl exec-watch --recursive /services -- confd -onetime -backend etcd -node 127.0.0.1:4001 1>/dev/null 2>&1 &) &
 
-echo "Please check if ${project_config_dir}/docker-compose.yml generated as expected and run docker-compoase against it."
-echo "If all containers started and you can login Gerrit from your browser, run scripts in ${project_postinstall_dir} to import a demo project."
+}
+
+function start_and_config_containers {
+# Get the project_config_dir and project_postinstall_dir again in case they have changed.
+project_config_dir=$(etcdctl get /services/myci/project_config_dir)
+project_postinstall_dir=${project_config_dir}/postinstall
+
 echo
+# First double-check all config files are generated
+if [ ! -e ${project_config_dir}/docker-compose.yml ]; then
+    echo "It seems the docker-compose.yml configuration file is not generated correctly, please troubleshoot... "
+    exit 1
+fi
+
+for myscript in S00setupContainer.sh  S01importDemoProject.sh
+do
+    if [ ! -e ${project_postinstall_dir}/${myscript} ]; then
+        echo "It seems the ${myscript} script is not generated correctly, please troubleshoot... "
+        exit 1
+    fi
+done
+
+# Prompt user to see if they want to start all containers
+while true  
+do  
+    read -n1 -p "Do you want to start all containers in myci service now? [Y/n] " response
+    echo 
+    case "$response" in
+        y|Y) echo "Starting all containers in myci service..." 
+             echo "docker-compose -f ${project_config_dir}/docker-compose.yml up -d"
+             echo
+             docker-compose -f ${project_config_dir}/docker-compose.yml up -d
+             echo "Wait for 1 minute to let all containers start properly..."
+             sleep 60
+             echo
+             break 
+             ;; 
+        n|N) echo
+             echo -e "Ok. You can run docker-compose manually against the ${project_config_dir}/docker-compose.yml  file later."
+             echo
+             exit 1 
+             ;; 
+        *)   echo
+             echo "Invalid option given." 
+             ;;
+    esac
+done
+
+# Check containers status
+mystatus=$(docker-compose -f ${project_config_dir}/docker-compose.yml ps |grep -v "\-\-\-\-\-\-" |grep -v State |grep -v Up)                      
+if [ ! -z ${mystatus} ]; then
+    echo ${mystatus}
+    echo "Some containers did not start properly, please use docker ps -a to troubleshoot further..."
+    exit 1
+fi
+
+# Prompt user to see if they want to run S00setupContainer.sh
+while true  
+do  
+    read -n1 -p "Do you want to run S00setupContainer.sh to setup initial users and link Gerrit and Jenkins now? [Y/n] " response
+    case "$response" in
+        y|Y) echo "Setup inital users in Gerrit and Jenkins containers..." 
+                echo
+                bash ${project_postinstall_dir}/S00setupContainer.sh
+                echo "Wait for 30 seconds for the S00setupContainer.sh to finish correctly..."
+                sleep 30
+                echo
+                break 
+                ;; 
+        n|N)    echo -e "Ok. You can run ${project_postinstall_dir}/S00setupContainer.sh script manually later."
+                echo
+                exit 1 
+                ;; 
+        *)      echo "Invalid option given." 
+                ;;
+    esac
+done
+
+# Check containers status
+mystatus=$(docker-compose -f ${project_config_dir}/docker-compose.yml ps |grep -v "\-\-\-\-\-\-" |grep -v State |grep -v Up)                      
+if [ ! -z ${mystatus} ]; then
+    echo ${mystatus}
+    echo "Some containers did not restart properly, please use docker ps -a to troubleshoot further..."
+    exit 1
+fi
+
+# Prompt user to see if they want to run S01importDemoProject.sh
+while true  
+do
+    read -n1 -p "Do you want to run S01importDemoProject.sh to import a demo project now? [Y/n] " response
+    echo 
+    case "$response" in
+        y|Y) echo "Import a demo project now..." 
+                echo
+                bash ${project_postinstall_dir}/S01importDemoProject.sh
+                echo
+                break 
+                ;;
+        n|N)    echo -e "Ok. You can run ${project_postinstall_dir}/S01importDemoProject.sh script manually later."
+                echo
+                exit 1
+                ;;
+        *)      echo "Invalid option given." 
+                ;;
+    esac
+done
+
 }
 
 prepare_environment
 set_varibles_and_generate_config_files
+start_and_config_containers 
