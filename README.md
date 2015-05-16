@@ -68,7 +68,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
     ## You can refer to "docker-compose -h" for more options
 
-## Following are postinstall scripts
+    ## Following are postinstall scripts
+ 
     ## To setup the intial login in Gerrit and link jenkins with gerrit:
     bash ~/ci/config/postinstall/S00setupContainer.sh
 
