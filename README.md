@@ -24,9 +24,8 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
     ## Then run the setup script to generate configuration files
     ## By default,all configuration files will be generated in ~/ci/config directory;
-    ## TODO: This script will prompt you if you want to start all containers up and import a demo project;
+    ## This script will prompt you if you want to start all containers up and import a demo project;
     ## If you choose no, you can run the docker-compose and/or postinstall scripts later;
-    ## See more details using the -h option
 
     ./myciSetup.sh
 

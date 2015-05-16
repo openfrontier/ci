@@ -84,6 +84,21 @@ function start_and_config_containers {
 # Get the project_config_dir and project_postinstall_dir again in case they have changed.
 project_config_dir=$(etcdctl get /services/myci/project_config_dir)
 project_postinstall_dir=${project_config_dir}/postinstall
+project_gerrit_weburl="$(etcdctl get /services/gerrit/weburl)"
+project_jenkins_weburl="$(etcdctl get /services/jenkins/weburl)"
+project_redmine_weburl="$(etcdctl get /services/redmine/weburl)"
+project_gerrit_admin_uid=$(etcdctl get /services/gerrit/admin_uid)
+project_gerrit_admin_password=$(etcdctl get /services/gerrit/admin_password)
+
+function check_container_status {
+# Check containers status
+mystatus=$(docker-compose -f ${project_config_dir}/docker-compose.yml ps |grep -v "\-\-\-\-\-\-" |grep -v State |grep -v Up)
+if [ ! -z ${mystatus} ]; then
+    echo ${mystatus}
+    echo "Some containers did not start or restart properly, please use docker ps -a to troubleshoot further..."
+    exit 1
+fi
+}
 
 echo
 # First double-check all config files are generated
@@ -107,12 +122,14 @@ do
     echo 
     case "$response" in
         y|Y) echo "Starting all containers in myci service..." 
+             echo
              echo "docker-compose -f ${project_config_dir}/docker-compose.yml up -d"
              echo
              docker-compose -f ${project_config_dir}/docker-compose.yml up -d
-             echo "Wait for 1 minute to let all containers start properly..."
-             sleep 60
              echo
+             echo "Wait for 1 minute to let all containers start properly..."
+             echo
+             sleep 60
              break 
              ;; 
         n|N) echo
@@ -126,64 +143,71 @@ do
     esac
 done
 
-# Check containers status
-mystatus=$(docker-compose -f ${project_config_dir}/docker-compose.yml ps |grep -v "\-\-\-\-\-\-" |grep -v State |grep -v Up)                      
-if [ ! -z ${mystatus} ]; then
-    echo ${mystatus}
-    echo "Some containers did not start properly, please use docker ps -a to troubleshoot further..."
-    exit 1
-fi
+check_container_status
+echo "You can check ${project_gerrit_weburl} for Gerrit, try to login as ${project_gerrit_admin_uid} / ${project_gerrit_admin_password}"
+echo "If you can't login, please do not run following postinstall scripts, and troubleshoot your LDAP setting and make sure above user/password works in your LDAP."
+echo
 
 # Prompt user to see if they want to run S00setupContainer.sh
 while true  
 do  
-    read -n1 -p "Do you want to run S00setupContainer.sh to setup initial users and link Gerrit and Jenkins now? [Y/n] " response
+    read -n1 -p "Do you want to run ${project_postinstall_dir}/S00setupContainer.sh to setup initial users and link Gerrit and Jenkins now? [Y/n] " response
     case "$response" in
-        y|Y) echo "Setup inital users in Gerrit and Jenkins containers..." 
+        y|Y)    echo 
+                echo "Setup inital users in Gerrit and Jenkins containers..." 
+                echo
+                echo "bash ${project_postinstall_dir}/S00setupContainer.sh"
                 echo
                 bash ${project_postinstall_dir}/S00setupContainer.sh
+                echo
                 echo "Wait for 30 seconds for the S00setupContainer.sh to finish correctly..."
                 sleep 30
-                echo
                 break 
                 ;; 
-        n|N)    echo -e "Ok. You can run ${project_postinstall_dir}/S00setupContainer.sh script manually later."
+        n|N)    echo
+                echo -e "Ok. You can run ${project_postinstall_dir}/S00setupContainer.sh script manually later."
                 echo
                 exit 1 
                 ;; 
-        *)      echo "Invalid option given." 
+        *)      echo
+                echo "Invalid option given." 
                 ;;
     esac
 done
 
-# Check containers status
-mystatus=$(docker-compose -f ${project_config_dir}/docker-compose.yml ps |grep -v "\-\-\-\-\-\-" |grep -v State |grep -v Up)                      
-if [ ! -z ${mystatus} ]; then
-    echo ${mystatus}
-    echo "Some containers did not restart properly, please use docker ps -a to troubleshoot further..."
-    exit 1
-fi
+check_container_status
+echo "You can check ${project_gerrit_weburl} for Gerrit and  ${project_jenkins_weburl} for Jenkins;"
+echo
 
 # Prompt user to see if they want to run S01importDemoProject.sh
 while true  
 do
-    read -n1 -p "Do you want to run S01importDemoProject.sh to import a demo project now? [Y/n] " response
+    read -n1 -p "Do you want to run ${project_postinstall_dir}/S01importDemoProject.sh to import a demo project now? [Y/n] " response
     echo 
     case "$response" in
-        y|Y) echo "Import a demo project now..." 
+        y|Y)    echo
+                echo "Import a demo project now..." 
+                echo
+                echo "bash ${project_postinstall_dir}/S01importDemoProject.sh"
                 echo
                 bash ${project_postinstall_dir}/S01importDemoProject.sh
                 echo
                 break 
                 ;;
-        n|N)    echo -e "Ok. You can run ${project_postinstall_dir}/S01importDemoProject.sh script manually later."
+        n|N)    echo
+                echo -e "Ok. You can run ${project_postinstall_dir}/S01importDemoProject.sh script manually later."
                 echo
                 exit 1
                 ;;
-        *)      echo "Invalid option given." 
+        *)      echo
+                echo "Invalid option given." 
                 ;;
     esac
 done
+
+check_container_status
+echo "You can check ${project_gerrit_weburl} for Gerrit,  ${project_jenkins_weburl} for Jenkins, and ${project_redmine_weburl} for Redmine;"
+echo
 
 }
 

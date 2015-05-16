@@ -37,7 +37,7 @@ fi
 # Start a sidekick container based on coreos/etcd to store user variables if etcd is not running
 docker ps |grep -q coreos/etcd
 if [ $? -eq 0 ]; then
-    echo "There are coreos/etcd containers running, will try to use etcd listening on 127.0.0.1:4001 to store configuration variables."
+    echo "There is a coreos/etcd container running, will try to use etcd listening on 127.0.0.1:4001 to store configuration variables."
 else
     echo "Starting a coreos/etcd container to store configuration variables"
     docker run \
