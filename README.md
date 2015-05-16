@@ -42,12 +42,12 @@ Create a a sidekick container based on coreos/etcd to store configuration variab
 
 ## You can also run setup steps individually using following instructions
 
-## Use docker-compose to start,stop and control the containers in this project
     ## run myciSetup.sh or updateConf.sh just to gernerate configuration files; 
     ## by default they are in ~/ci/config, you may copy it to anywhere you want and cd to that directory;
     ## or you can use the "docker-compose -f <file> <docker_command_options>" to specify its location;
     ## then run following command to bring up all containers:
 
+    ## Use docker-compose to start,stop and control the containers in this project
     docker-compose up    # or for example: "docker-compose -f ~/ci/config/docker-compose.yml up"
 
     ## If you want to run the containers in detached mode, add a -d switch:
