@@ -21,6 +21,7 @@ LDAP_ACCOUNTBASE=${LDAP_ACCOUNTBASE:-$1}
 
 ## Gerrit server and database containers' name
 GERRIT_NAME=gerrit${SUFFIX}
+GERRIT_VOLUME=gerrit-volume${SUFFIX}
 PG_GERRIT_NAME=pg-gerrit${SUFFIX}
 
 ## Gerrit access hostname
@@ -33,6 +34,7 @@ GERRIT_IMAGE_NAME=openfrontier/gerrit
 
 ## Jenkins container's name
 JENKINS_NAME=jenkins${SUFFIX}
+JENKINS_VOLUME=jenkins-volume${SUFFIX}
 
 ## Jenkins start options
 JENKINS_OPTS=--prefix=/${JENKINS_NAME}
