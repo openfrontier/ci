@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-HOST_NAME=172.20.201.104
+HOST_NAME=172.20.201.177
 GERRIT_ADMIN_UID=$1
 GERRIT_ADMIN_PWD=$2
 GERRIT_ADMIN_EMAIL=$3
@@ -47,4 +47,4 @@ git push origin
 cd -
 rm -rf ~/ci/demo
 
-curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/config.xml
+curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/jenkins.config.xml

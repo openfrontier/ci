@@ -6,13 +6,13 @@
 SUFFIX=${SUFFIX:-$5}
 
 ## Host IP or DNS name.
-HOST_NAME=172.20.201.104
+HOST_NAME=172.20.201.177
 
 ## Gerrit administrator's uid in LDAP
 GERRIT_ADMIN_UID=${GERRIT_ADMIN_UID:-$2}
 GERRIT_ADMIN_PWD=${GERRIT_ADMIN_PWD:-$3}
 GERRIT_ADMIN_EMAIL=${GERRIT_ADMIN_EMAIL:-$4}
-GERRIT_ADMIN_SSH_KEY_DIR=~/.ssh/id_rsa.pub
+GERRIT_ADMIN_SSH_KEY_PATH=~/.ssh/id_rsa.pub
 
 ## LDAP Server
 LDAP_SERVER=172.20.201.98
@@ -60,5 +60,5 @@ NGINX_IMAGE_NAME=nginx
 
 ## Sonatype Nexus config
 ## Comment out this variable if there's no nexus server.
-NEXUS_WEBURL=http://172.20.201.104:8081/content/groups/public
+NEXUS_WEBURL=http://172.20.201.177:8081/content/groups/public
 
