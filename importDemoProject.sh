@@ -1,14 +1,9 @@
 #!/bin/bash
 set -e
 
-HOST_NAME=172.20.201.177
-GERRIT_ADMIN_UID=$1
-GERRIT_ADMIN_PWD=$2
-GERRIT_ADMIN_EMAIL=$3
-SUFFIX=$4
-GERRIT_WEBURL=http://${HOST_NAME}/gerrit${SUFFIX}
-JENKINS_WEBURL=http://${HOST_NAME}/jenkins${SUFFIX}
-GERRIT_SSH_HOST=${HOST_NAME}
+# Add common variables.
+source ~/ci/config
+source ~/ci/config.default
 
 # Create demo project on Gerrit.
 curl -X PUT --user ${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD} -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < ~/ci/demoProject.json

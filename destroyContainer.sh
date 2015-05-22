@@ -1,7 +1,8 @@
 #!/bin/bash
 SUFFIX=$1
 # Add common variables.
-source ~/ci/commonVar.sh
+source ~/ci/config
+source ~/ci/config.default
 
 # Destroy Jenkins server container.
 source ~/jenkins-docker/destroyJenkins.sh

@@ -2,7 +2,8 @@
 set -e
 
 # Add common variables.
-source ~/ci/commonVar.sh
+source ~/ci/config
+source ~/ci/config.default
 
 # Create Gerrit server container.
 source ~/gerrit-docker/createGerrit.sh

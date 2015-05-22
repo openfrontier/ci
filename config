@@ -1,0 +1,18 @@
+#!/bin/bash
+## Hostname, IP or FQDN.
+HOST_NAME=127.0.0.1
+
+## LDAP Server
+LDAP_SERVER=127.0.0.1
+## LDAP account baseDN
+LDAP_ACCOUNTBASE=ou=accounts,dc=demo,dc=com
+
+## Gerrit administrator's uid in LDAP
+GERRIT_ADMIN_UID=
+GERRIT_ADMIN_PWD=
+GERRIT_ADMIN_EMAIL=admin@demo.com
+
+## Sonatype Nexus repository URL
+## Jenkins use this URL as maven mirror.
+## Uncomment this variable if there's a nexus server.
+#NEXUS_WEBURL=http://127.0.0.1:8080/content/groups/public

@@ -3,7 +3,8 @@ set -e
 
 # Add common variables.
 echo ">>>> Import common variables."
-source ~/ci/commonVar.sh
+source ~/ci/config
+source ~/ci/config.default
 
 #Create administrator in Gerrit.
 echo ">>>> Setup Gerrit."
