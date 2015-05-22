@@ -26,13 +26,9 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
 
 ## Create all containers.
     ## Edit variables according to your environment.
-    vi ~/ci/commonVar.sh
-    ## Create Gerrit Jenkins Redmine PostgreSQL containers.
-    ~/ci/createContainer.sh <LDAP account search baseDN> <gerrit admin uid> <gerrit admin password> <gerrit admin email>
-    ## Integrate Jenkins with Gerrit.
-    ~/ci/setupContainer.sh  <LDAP account search baseDN> <gerrit admin uid> <gerrit admin password> <gerrit admin email>
-    ## Import demo project to Gerrit and Jenkins.
-    ~/ci/importDemoProject.sh  <gerrit admin uid> <gerrit admin password> <gerrit admin email>
+    vi ~/ci/config
+    ## Start all containers.
+    ~/ci/run.sh
 
 ## Access those services.
     ## Gerrit
