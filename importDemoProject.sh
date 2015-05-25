@@ -13,6 +13,11 @@ rm -rf ~/ci/demo
 mkdir ~/ci/demo
 git init ~/ci/demo
 cd ~/ci/demo
+
+#start ssh agent and add ssh key
+eval $(ssh-agent)
+ssh-add "${SSH_KEY_PATH}"
+
 git config core.filemode false
 git config user.name  ${GERRIT_ADMIN_UID}
 git config user.email ${GERRIT_ADMIN_EMAIL}
@@ -37,6 +42,9 @@ tar xf ~/ci/demoProject.tar
 git add demo
 git commit -m "Init project"
 git push origin
+
+#stop ssh agent
+kill ${SSH_AGENT_PID}
 
 # Remove local git repository.
 cd -

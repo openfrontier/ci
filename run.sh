@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
 
-mkdir -p ~/.ssh/
-if [ ! -e ~/.ssh/id_rsa -o ! -e ~/.ssh/id_rsa.pub ]; then
+source ~/ci/config
+source ~/ci/config.default
+
+if [ ! -e "${SSH_KEY_PATH}" -o ! -e "${SSH_KEY_PATH}.pub" ]; then
   echo "Generating SSH keys..."
-  rm -rf ~/.ssh/id_rsa ~/.ssh/id_rsa.pub
-  ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa -C ${GERRIT_ADMIN_EMAIL}
+  rm -rf "${SSH_KEY_PATH}" "${SSH_KEY_PATH}.pub"
+  mkdir -p "${SSH_KEY_PATH%/*}"
+  ssh-keygen -t rsa -N "" -f "${SSH_KEY_PATH}" -C ${GERRIT_ADMIN_EMAIL}
 fi
 
 ~/ci/createContainer.sh ${SUFFIX}
@@ -26,3 +29,5 @@ while [ -z "$(docker logs jenkins${SUFFIX} 2>&1 | tail -n 20 | grep "Jenkins is 
 done
 sleep 5
 ~/ci/importDemoProject.sh ${SUFFIX}
+
+echo ">>>> Everything is ready."

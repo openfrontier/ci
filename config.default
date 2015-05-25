@@ -6,7 +6,7 @@
 SUFFIX=${SUFFIX:-$1}
 
 ## Gerrit administrator's ssh key
-GERRIT_ADMIN_SSH_KEY_PATH=~/.ssh/id_rsa.pub
+SSH_KEY_PATH=${SSH_KEY_PATH:-~/.ssh/id_rsa}
 
 ## Gerrit server and database containers' name
 GERRIT_NAME=gerrit${SUFFIX}
