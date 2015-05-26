@@ -47,5 +47,11 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
     http://your.server.url/redmine
     Default Administrator's username and password is admin/admin.
 
+## Stop and restart all containers.
+    ## Stop all
+    ~/ci/stop.sh
+    ## Restart all
+    ~/ci/start.sh
+
 ## Destroy all containers.(Use with caution!) 
     ~/ci/destroyContainer.sh
