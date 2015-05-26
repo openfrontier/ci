@@ -12,22 +12,22 @@ if [ ! -e "${SSH_KEY_PATH}" -o ! -e "${SSH_KEY_PATH}.pub" ]; then
 fi
 
 ~/ci/createContainer.sh ${SUFFIX}
-while [ -z "$(docker logs gerrit${SUFFIX} 2>&1 | grep "Gerrit Code Review [0-9..]* ready")" ]; do
+while [ -z "$(docker logs ${GERRIT_NAME} 2>&1 | grep "Gerrit Code Review [0-9..]* ready")" ]; do
     echo "Waiting gerrit ready."
-    sleep 5
+    sleep 1
 done
-while [ -z "$(docker logs jenkins${SUFFIX} 2>&1 | tail -n 20 | grep "Jenkins is fully up and running")" ]; do
+while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | grep "Jenkins is fully up and running")" ]; do
     echo "Waiting jenkins ready."
-    sleep 5
+    sleep 1
 done
-sleep 5
+#sleep 5
 ~/ci/setupContainer.sh ${SUFFIX}
-sleep 10
-while [ -z "$(docker logs jenkins${SUFFIX} 2>&1 | tail -n 20 | grep "Jenkins is fully up and running")" ]; do
+#sleep 10
+while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep "Jenkins is fully up and running")" ]; do
     echo "Waiting jenkins ready."
-    sleep 5
+    sleep 1
 done
-sleep 5
+#sleep 5
 ~/ci/importDemoProject.sh ${SUFFIX}
 
 echo ">>>> Everything is ready."
