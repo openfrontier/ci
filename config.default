@@ -36,6 +36,7 @@ JENKINS_WEBURL=http://${HOST_NAME}/${JENKINS_NAME}
 
 ## Redmine container's name
 REDMINE_NAME=redmine${SUFFIX}
+REDMINE_VOLUME=redmine-volume${SUFFIX}
 PG_REDMINE_NAME=pg-redmine${SUFFIX}
 
 ## Redmine docker image's name
