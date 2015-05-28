@@ -7,6 +7,11 @@ LDAP_SERVER=127.0.0.1
 ## LDAP account baseDN
 LDAP_ACCOUNTBASE=ou=accounts,dc=demo,dc=com
 
+## Set these values if use openldap docker
+## LDAP base domain
+SLAPD_DOMAIN=demo.com
+SLAPD_PASSWORD=secret
+
 ## Gerrit administrator's uid in LDAP
 GERRIT_ADMIN_UID=
 GERRIT_ADMIN_PWD=
