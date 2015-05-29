@@ -51,3 +51,7 @@ cd -
 rm -rf ~/ci/demo
 
 curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/jenkins.config.xml
+
+# Import redmine demo data
+REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
+docker exec pg-redmine gosu postgres psql -d redmine -U redmine -f /${REDMINE_DEMO_DATA_SQL}
