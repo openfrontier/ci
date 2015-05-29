@@ -9,12 +9,14 @@ Create a Redmine container.
 
 Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
 
+Optionally create a OpenLDAP container for demo.
+
 ## Prerequisites
-    A OpenLDAP or AD server with anonymous binding configuration.
-    An user account with email in the OpenLDAP or AD server.
     Docker service installed on host.
     Git installed on host.
-    A Sonatype Nexus server (Optional).
+    A OpenLDAP or AD server with anonymous binding configuration. (Optional)
+    An user account with email in the OpenLDAP or AD server. (Optional)
+    A Sonatype Nexus server. (Optional)
 
 ## Get docker images.
     docker pull openfrontier/gerrit
@@ -22,6 +24,7 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
     docker pull sameersbn/redmine
     docker pull postgres
     docker pull nginx
+    docker pull dinkel/openldap (Optional)
 
 ## Get scriptes.
     cd ~
@@ -30,6 +33,7 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
     git clone https://github.com/openfrontier/redmine-docker.git
     git clone https://github.com/openfrontier/nginx-docker.git
     git clone https://github.com/openfrontier/ci.git
+    git clone https://github.com/openfrontier/openldap-docker.git (Optional)
 
 ## Create all containers.
     ## Edit variables according to your environment.
