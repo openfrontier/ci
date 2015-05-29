@@ -5,6 +5,12 @@
 ## Suffix of containers' name
 SUFFIX=${SUFFIX:-$1}
 
+## OpenLDAP
+if [ ${#SLAPD_DOMAIN} -gt 0 -a ${#SLAPD_PASSWORD} -gt 0 ]; then
+    LDAP_SERVER="${HOST_NAME}"
+    LDAP_ACCOUNTBASE="ou=accounts$(echo .${SLAPD_DOMAIN} | sed 's/\./,dc=/g')"
+fi
+
 ## Gerrit administrator's ssh key
 SSH_KEY_PATH=${SSH_KEY_PATH:-~/.ssh/id_rsa}
 
