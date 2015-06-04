@@ -57,5 +57,10 @@ Optionally create a OpenLDAP container for demo.
     ## Restart all
     ~/ci/start.sh
 
+## Upgrade containers.(Use with caution!)
+    ## Upgrade Gerrit, Jenkins, Redmine, Nginx
+    ## Keep all data containers untouched.
+    ~/ci/upgradeContainer.sh
+
 ## Destroy all containers.(Use with caution!) 
     ~/ci/destroyContainer.sh
