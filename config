@@ -3,7 +3,7 @@
 HOST_NAME=127.0.0.1
 
 ## LDAP server configuration
-## Comment these variables out if a docked openldap is needed.
+## Comment these variables out if you have a running ldap server.
 ## If SLAPD_DOMAIN and SLAPD_PASSWORD is set,
 ## LDAP_SERVER and LDAP_ACCOUNTBASE will be overwritten automatically.
 SLAPD_DOMAIN=demo.com
