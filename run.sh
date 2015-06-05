@@ -23,7 +23,8 @@ done
 #sleep 5
 ~/ci/setupContainer.sh ${SUFFIX}
 #sleep 10
-while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep "Jenkins is fully up and running")" ]; do
+while [ -n "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'Running from: /usr/share/jenkins/jenkins.war')" -o \
+        -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'Jenkins is fully up and running')" ]; do
     echo "Waiting jenkins ready."
     sleep 1
 done
