@@ -54,4 +54,4 @@ curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKI
 
 # Import redmine demo data
 REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
-#docker exec pg-redmine gosu postgres psql -d redmine -U redmine -f /${REDMINE_DEMO_DATA_SQL}
+docker exec pg-redmine gosu postgres psql -d redmine -U redmine -f /${REDMINE_DEMO_DATA_SQL}
