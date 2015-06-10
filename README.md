@@ -11,6 +11,8 @@ Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
 
 Optionally create a OpenLDAP container for demo.
 
+Optionally create a Nexus as local maven repository.
+
 ## Prerequisites
     Docker service installed on host.
     Git installed on host.
@@ -25,6 +27,7 @@ Optionally create a OpenLDAP container for demo.
     docker pull postgres
     docker pull nginx
     docker pull dinkel/openldap (Optional)
+    docker pull sonatype/nexus (Optional)
 
 ## Get scriptes.
     cd ~
@@ -34,6 +37,7 @@ Optionally create a OpenLDAP container for demo.
     git clone https://github.com/openfrontier/nginx-docker.git
     git clone https://github.com/openfrontier/ci.git
     git clone https://github.com/openfrontier/openldap-docker.git (Optional)
+    git clone https://github.com/openfrontier/nginx-docker.git (Optional)
 
 ## Create all containers.
     ## Edit variables according to your environment.
@@ -50,6 +54,9 @@ Optionally create a OpenLDAP container for demo.
     ## Redmine
     http://your.server.url/redmine
     Default Administrator's username and password is admin/admin.
+    ## Nexus (Optional)
+    http://your.server.url/nexus
+    Default Administrator's username and password is admin/admin123.
 
 ## Stop and restart all containers.
     ## Stop all

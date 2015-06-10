@@ -4,6 +4,16 @@ set -e
 source ~/ci/config
 source ~/ci/config.default
 
+# Start Nexus.
+if [ -n "$(docker ps -a | grep ${NEXUS_NAME})" ]; then
+    docker start ${NEXUS_NAME}
+fi
+
+# Start OpenLDAP
+if [ -n "$(docker ps -a | grep ${LDAP_NAME})" ]; then
+    docker start ${LDAP_NAME}
+fi
+
 # Start Gerrit.
 docker start ${PG_GERRIT_NAME}
 

@@ -51,5 +51,26 @@ REDMINE_IMAGE_NAME=sameersbn/redmine
 ## Nginx docker container's name
 NGINX_NAME=proxy
 
-## Nginx docker images's name
+## Nginx docker image's name
 NGINX_IMAGE_NAME=nginx
+
+## Default Nexus URL
+if [ ${#NEXUS_WEBURL} -gt 0 ]; then
+    NEXUS_REPO=${NEXUS_WEBURL}/content/groups/public
+else
+    NEXUS_REPO=http://${HOST_NAME}/nexus/content/groups/public
+fi
+
+## Nexus container's name.
+NEXUS_NAME=nexus
+NEXUS_VOLUME=nexus-volume
+
+# Nexue docker image's name.
+NEXUS_IMAGE_NAME=sonatype/nexus
+
+## Openldap container's name.
+LDAP_NAME=openldap
+LDAP_VOLUME=openldap-volume
+
+## Openldap image's name.
+LDAP_IMAGE_NAME=dinkel/openldap

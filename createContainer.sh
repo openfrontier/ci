@@ -5,6 +5,11 @@ set -e
 source ~/ci/config
 source ~/ci/config.default
 
+# Create Nexus server.
+if [ ${#NEXUS_WEBURL} -eq 0 ]; then
+    source ~/nexus-docker/createNexus.sh
+fi
+
 # Create OpenLDAP server.
 if [ ${#SLAPD_DOMAIN} -gt 0 -a ${#SLAPD_PASSWORD} -gt 0 ]; then
     source ~/openldap-docker/createOpenLDAP.sh

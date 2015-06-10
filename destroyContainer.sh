@@ -18,3 +18,6 @@ source ~/nginx-docker/destroyNginx.sh
 
 # Destroy OpenLDAP server.
 source ~/openldap-docker/destroyOpenLDAP.sh
+
+# Destroy Nexus server.
+source ~/nexus-docker/destroyNexus.sh

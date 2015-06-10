@@ -3,14 +3,14 @@
 HOST_NAME=127.0.0.1
 
 ## LDAP server configuration
-## Comment these variables out if you have a running ldap server.
+## Comment these variables out if you already have a running ldap server.
 ## If SLAPD_DOMAIN and SLAPD_PASSWORD is set,
 ## LDAP_SERVER and LDAP_ACCOUNTBASE will be overwritten automatically.
 SLAPD_DOMAIN=demo.com
 SLAPD_PASSWORD=secret
 
 ## LDAP_SERVER and LDAP_ACCOUNTBASE become unnecessary
-## if SLAPD_DOMAIN and SLAPD_PASSWORD have values.
+## if SLAPD_DOMAIN and SLAPD_PASSWORD are specified.
 ## LDAP Server IP or FQDN.
 LDAP_SERVER=127.0.0.1
 ## LDAP account baseDN
@@ -21,7 +21,8 @@ GERRIT_ADMIN_UID=admin
 GERRIT_ADMIN_PWD=passwd
 GERRIT_ADMIN_EMAIL=admin@demo.com
 
-## Sonatype Nexus repository URL
-## Jenkins use this URL as maven mirror.
-## Uncomment this variable if there's a nexus server.
-#NEXUS_WEBURL=http://127.0.0.1:8080/content/groups/public
+## A Nexus server will be started by default.
+## Specify this variable only if you want to use
+## an existing nexus server instead.
+## Jenkins uses NEXUS_WEBURL to setup maven repository mirror.
+#NEXUS_WEBURL=http://127.0.0.1/nexus
