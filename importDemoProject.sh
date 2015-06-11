@@ -55,3 +55,5 @@ curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKI
 # Import redmine demo data
 REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
 docker exec pg-redmine gosu postgres psql -d redmine -U redmine -f /${REDMINE_DEMO_DATA_SQL}
+# Non member add roles
+docker exec pg-redmine gosu postgres psql -d redmine -U redmine -c "update roles set permissions = '---\n- :view_issues\n- :add_issues\n- :view_changesets\n' where id = 1"
