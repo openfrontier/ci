@@ -25,7 +25,7 @@ HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}
 GERRIT_SSH_HOST=${HOST_NAME}
 
 ## Gerrit docker image's name
-GERRIT_IMAGE_NAME=openfrontier/gerrit
+GERRIT_IMAGE_NAME=${GERRIT_IMAGE_NAME:-openfrontier/gerrit}
 
 ## Jenkins container's name
 JENKINS_NAME=jenkins${SUFFIX}
@@ -35,7 +35,7 @@ JENKINS_VOLUME=jenkins-volume${SUFFIX}
 JENKINS_OPTS=--prefix=/${JENKINS_NAME}
 
 ## Jenkins docker image's name
-JENKINS_IMAGE_NAME=openfrontier/jenkins
+JENKINS_IMAGE_NAME=${JENKINS_IMAGE_NAME:-openfrontier/jenkins}
 
 ## Jenkins access
 JENKINS_WEBURL=http://${HOST_NAME}/${JENKINS_NAME}
@@ -46,13 +46,13 @@ REDMINE_VOLUME=redmine-volume${SUFFIX}
 PG_REDMINE_NAME=pg-redmine${SUFFIX}
 
 ## Redmine docker image's name
-REDMINE_IMAGE_NAME=sameersbn/redmine
+REDMINE_IMAGE_NAME=${REDMINE_IMAGE_NAME:-sameersbn/redmine}
 
 ## Nginx docker container's name
 NGINX_NAME=proxy
 
 ## Nginx docker image's name
-NGINX_IMAGE_NAME=nginx
+NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME:-nginx}
 
 ## Default Nexus URL
 if [ ${#NEXUS_WEBURL} -gt 0 ]; then
@@ -66,11 +66,11 @@ NEXUS_NAME=nexus
 NEXUS_VOLUME=nexus-volume
 
 # Nexue docker image's name.
-NEXUS_IMAGE_NAME=sonatype/nexus
+NEXUS_IMAGE_NAME=${NEXUS_IMAGE_NAME:-sonatype/nexus}
 
 ## Openldap container's name.
 LDAP_NAME=openldap
 LDAP_VOLUME=openldap-volume
 
 ## Openldap image's name.
-LDAP_IMAGE_NAME=dinkel/openldap
+LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-dinkel/openldap}
