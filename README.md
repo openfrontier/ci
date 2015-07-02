@@ -26,7 +26,7 @@ Optionally create a Nexus as local maven repository.
     docker pull sameersbn/redmine
     docker pull postgres
     docker pull nginx
-    docker pull dinkel/openldap (Optional)
+    docker pull openfrontier/openldap (Optional)
     docker pull sonatype/nexus (Optional)
 
 ## Get scriptes.
