@@ -20,4 +20,6 @@ source ~/nginx-docker/destroyNginx.sh
 source ~/openldap-docker/destroyOpenLDAP.sh
 
 # Destroy Nexus server.
-source ~/nexus-docker/destroyNexus.sh
+if [ ${#NEXUS_WEBURL} -eq 0 ]; then
+    source ~/nexus-docker/destroyNexus.sh
+fi
