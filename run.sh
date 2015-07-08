@@ -16,10 +16,12 @@ while [ -z "$(docker logs ${GERRIT_NAME} 2>&1 | grep "Gerrit Code Review [0-9..]
     echo "Waiting gerrit ready."
     sleep 1
 done
+echo "Gerrit is ready"
 while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | grep "Jenkins is fully up and running")" ]; do
     echo "Waiting jenkins ready."
     sleep 1
 done
+echo "Jenkins is ready"
 #sleep 5
 ~/ci/setupContainer.sh ${SUFFIX}
 #sleep 10
@@ -28,7 +30,8 @@ while [ -n "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'Running from:
     echo "Waiting jenkins ready."
     sleep 1
 done
-#sleep 5
+echo "Jenkins is ready"
+sleep 5
 ~/ci/importDemoProject.sh ${SUFFIX}
 
 echo ">>>> Everything is ready."
