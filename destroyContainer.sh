@@ -23,3 +23,6 @@ source ~/openldap-docker/destroyOpenLDAP.sh
 if [ ${#NEXUS_WEBURL} -eq 0 ]; then
     source ~/nexus-docker/destroyNexus.sh
 fi
+
+# Destroy jenkins slave volume.
+source ~/jenkins-slave-docker/destroyJenkinsSlave.sh
