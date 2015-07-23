@@ -22,6 +22,11 @@ while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | grep "Jenkins is fully up and r
     sleep 1
 done
 echo "Jenkins is ready"
+while [ -z "$(docker logs ${REDMINE_NAME} 2>&1 | grep "INFO success: nginx entered RUNNING state")" ]; do
+    echo "Waiting redmine ready."
+    sleep 1
+done
+echo "Redmine is ready"
 #sleep 5
 ~/ci/setupContainer.sh ${SUFFIX}
 #sleep 10
