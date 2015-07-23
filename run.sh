@@ -17,7 +17,7 @@ while [ -z "$(docker logs ${GERRIT_NAME} 2>&1 | grep "Gerrit Code Review [0-9..]
     sleep 1
 done
 echo "Gerrit is ready"
-while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | grep "Jenkins is fully up and running")" ]; do
+while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | grep "setting agent port for jnlp")" ]; do
     echo "Waiting jenkins ready."
     sleep 1
 done
@@ -31,12 +31,12 @@ echo "Redmine is ready"
 ~/ci/setupContainer.sh ${SUFFIX}
 #sleep 10
 while [ -n "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'Running from: /usr/share/jenkins/jenkins.war')" -o \
-        -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'Jenkins is fully up and running')" ]; do
+        -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'setting agent port for jnlp')" ]; do
     echo "Waiting jenkins ready."
     sleep 1
 done
 echo "Jenkins is ready"
-sleep 5
+#sleep 5
 ~/ci/importDemoProject.sh ${SUFFIX}
 
 echo ">>>> Everything is ready."
