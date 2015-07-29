@@ -27,12 +27,12 @@ while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep "Jenkins is fu
 done
 
 # Upgrade Redmine server container.
-source ~/redmine-docker/upgradeRedmine.sh
-
-while [ -z "$(docker logs ${REDMINE_NAME} 2>&1 | tail -n 5 | grep 'INFO success: nginx entered RUNNING state')" ]; do
-    echo "Waiting redmine ready."
-    sleep 1
-done
-
+#source ~/redmine-docker/upgradeRedmine.sh
+#
+#while [ -z "$(docker logs ${REDMINE_NAME} 2>&1 | tail -n 5 | grep 'INFO success: nginx entered RUNNING state')" ]; do
+#    echo "Waiting redmine ready."
+#    sleep 1
+#done
+#
 # Upgrade Nginx proxy server container.
 source ~/nginx-docker/upgradeNginx.sh

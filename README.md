@@ -67,6 +67,7 @@ Optionally create a Nexus as local maven repository.
 ## Upgrade containers.(Use with caution!)
     ## Upgrade Gerrit, Jenkins, Redmine, Nginx
     ## Keep all data containers untouched.
+    ## Gerrit 2.10.6 -> 2.11.2 has been tested.
     ~/ci/upgradeContainer.sh
 
 ## Destroy all containers.(Use with caution!) 
