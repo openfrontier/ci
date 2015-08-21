@@ -1,17 +1,16 @@
 # ci project
-Continuous integration system base on other docker projects.
-
-Create a Gerrit with PostgreSQL as backend and OpenLDAP as authentication server.
-
-Create a Jenkins that integrate with Gerrit.
-
-Create a Redmine container.
-
-Create a Nginx as a reverse proxy of the Gerrit, Jenkins and Redmine.
-
-Optionally create a OpenLDAP container for demo.
-
-Optionally create a Nexus as local maven repository.
+## Features
+* Continuous integration system base on other docker projects.
+* Create a Gerrit with PostgreSQL as backend and OpenLDAP as authentication server.
+* Create a Jenkins that integrate with Gerrit.
+* Create a Jenkins slave workspace volume.
+* Create a Redmine with OpenLDAP as authentication server.
+* Optionally create a OpenLDAP container for demo.
+* Optionally create a Nexus as local maven repository.
+* Create a Nginx as a reverse proxy of the Gerrit, Jenkins, Redmine, Nexus(Optional).
+* Import a project to demonstrate the configuration of Gerrit, Jenkins, Redmine which including:
+  * Using Jenkins gerrit plugin to trigger builds from gerrit.
+  * Using Jenkins docker plugin to trigger builds on a dockerized slave node.
 
 ## Prerequisites
     Docker service installed on host.
@@ -23,6 +22,7 @@ Optionally create a Nexus as local maven repository.
 ## Get docker images.
     docker pull openfrontier/gerrit
     docker pull openfrontier/jenkins
+    docker pull openfrontier/jenkins-slave
     docker pull sameersbn/redmine
     docker pull postgres
     docker pull nginx
@@ -33,6 +33,7 @@ Optionally create a Nexus as local maven repository.
     cd ~
     git clone https://github.com/openfrontier/gerrit-docker.git
     git clone https://github.com/openfrontier/jenkins-docker.git
+    git clone https://github.com/openfrontier/jenkins-slave-docker.git
     git clone https://github.com/openfrontier/redmine-docker.git
     git clone https://github.com/openfrontier/nginx-docker.git
     git clone https://github.com/openfrontier/ci.git
