@@ -21,7 +21,7 @@ done
 # Upgrade Jenkins server container.
 source ~/jenkins-docker/upgradeJenkins.sh
 
-while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep "Jenkins is fully up and running")" ]; do
+while [ -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep "setting agent port for jnlp")" ]; do
     echo "Waiting jenkins ready."
     sleep 1
 done
