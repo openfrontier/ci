@@ -38,5 +38,6 @@ done
 echo "Jenkins is ready"
 #sleep 5
 ~/ci/importDemoProject.sh ${SUFFIX}
+~/ci/importDockerProject.sh ${SUFFIX}
 
 echo ">>>> Everything is ready."
