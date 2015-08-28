@@ -54,6 +54,9 @@ NGINX_NAME=proxy
 ## Nginx docker image's name
 NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME:-nginx}
 
+## Nginx file upload limit.
+NGINX_MAX_UPLOAD_SIZE=${NGINX_MAX_UPLOAD_SIZE:-200m}
+
 ## Default Nexus URL
 if [ ${#NEXUS_WEBURL} -gt 0 ]; then
     NEXUS_REPO=${NEXUS_WEBURL}/content/groups/public
