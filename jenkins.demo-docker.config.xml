@@ -89,12 +89,12 @@
     <com.cloudbees.dockerpublish.DockerBuilder plugin="docker-build-publish@1.0">
       <server plugin="docker-commons@1.2"/>
       <registry plugin="docker-commons@1.2"/>
-      <repoName>transcosmos/demo</repoName>
+      <repoName>openfrontier/demo</repoName>
       <noCache>true</noCache>
       <forcePull>false</forcePull>
       <dockerfilePath>docker</dockerfilePath>
       <skipBuild>false</skipBuild>
-      <skipDecorate>false</skipDecorate>
+      <skipDecorate>true</skipDecorate>
       <repoTag>${BUILD_NUMBER}</repoTag>
       <skipPush>true</skipPush>
       <createFingerprint>true</createFingerprint>
