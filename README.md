@@ -29,7 +29,7 @@
     docker pull openfrontier/openldap (Optional)
     docker pull openfrontier/nexus (Optional)
 
-## Get scriptes.
+## Get scripts.
     cd ~
     git clone https://github.com/openfrontier/gerrit-docker.git
     git clone https://github.com/openfrontier/jenkins-docker.git
@@ -37,8 +37,10 @@
     git clone https://github.com/openfrontier/redmine-docker.git
     git clone https://github.com/openfrontier/nginx-docker.git
     git clone https://github.com/openfrontier/ci.git
-    git clone https://github.com/openfrontier/openldap-docker.git (Optional)
-    git clone https://github.com/openfrontier/nexus-docker.git (Optional)
+
+    # These two are optional
+    git clone https://github.com/openfrontier/openldap-docker.git
+    git clone https://github.com/openfrontier/nexus-docker.git
 
 ## Create all containers.
     ## Edit variables according to your environment.
