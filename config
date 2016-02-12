@@ -6,7 +6,7 @@ HOST_NAME=127.0.0.1
 ## Comment these variables out if you already have a running ldap server.
 ## If SLAPD_DOMAIN and SLAPD_PASSWORD is set,
 ## LDAP_SERVER and LDAP_ACCOUNTBASE will be overwritten automatically.
-SLAPD_DOMAIN=demo.com
+SLAPD_DOMAIN=example.com
 SLAPD_PASSWORD=secret
 
 ## LDAP_SERVER and LDAP_ACCOUNTBASE become unnecessary
@@ -14,7 +14,7 @@ SLAPD_PASSWORD=secret
 ## LDAP Server IP or FQDN.
 LDAP_SERVER=127.0.0.1
 ## LDAP account baseDN
-LDAP_ACCOUNTBASE=ou=accounts,dc=demo,dc=com
+LDAP_ACCOUNTBASE=ou=accounts,dc=example,dc=com
 
 ## Gerrit administrator's uid in LDAP
 GERRIT_ADMIN_UID=admin
