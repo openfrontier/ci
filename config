@@ -26,3 +26,6 @@ GERRIT_ADMIN_EMAIL=admin@example.com
 ## an existing nexus server instead.
 ## Jenkins uses NEXUS_WEBURL to setup maven repository mirror.
 #NEXUS_WEBURL=http://127.0.0.1/nexus
+
+# set to 1 to use HTTPS in the proxy
+NGINX_USE_HTTPS=1
