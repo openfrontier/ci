@@ -17,7 +17,7 @@
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
         <refspec>$GERRIT_REFSPEC</refspec>
-        <url>ssh://jenkins@172.17.42.1:29418/demo</url>
+        <url>ssh://jenkins@172.17.0.1:29418/demo</url>
         <credentialsId>23e83599-3e3b-4bad-a33d-1001043c8aac</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
