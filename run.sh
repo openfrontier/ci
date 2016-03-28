@@ -31,7 +31,7 @@ echo "Redmine is ready"
 ~/ci/setupContainer.sh ${SUFFIX}
 #sleep 10
 while [ -n "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'Running from: /usr/share/jenkins/jenkins.war')" -o \
-        -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'setting agent port for jnlp')" ]; do
+        -z "$(docker logs ${JENKINS_NAME} 2>&1 | tail -n 5 | grep 'setting agent port for jnlp... done')" ]; do
     echo "Waiting jenkins ready."
     sleep 1
 done
