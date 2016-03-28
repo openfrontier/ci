@@ -50,7 +50,7 @@ kill ${SSH_AGENT_PID}
 cd -
 rm -rf ~/ci/demo
 
-curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/jenkins.config.xml
+curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/jenkins.demo.config.xml
 
 # Import redmine demo data
 REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
