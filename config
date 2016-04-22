@@ -19,7 +19,7 @@ LDAP_ACCOUNTBASE=ou=accounts,dc=example,dc=com
 ## Gerrit administrator's uid in LDAP
 GERRIT_ADMIN_UID=admin
 GERRIT_ADMIN_PWD=passwd
-GERRIT_ADMIN_EMAIL=admin@example.com
+GERRIT_ADMIN_EMAIL=admin@${SLAPD_DOMAIN}
 
 ## A Nexus server will be started by default.
 ## Specify this variable only if you want to use
