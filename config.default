@@ -8,9 +8,17 @@ SUFFIX=${SUFFIX:-$1}
 ## Docker network
 CI_NETWORK=${CI_NETWORK:-ci-network}
 
-## OpenLDAP
+## Openldap container's name.
+LDAP_NAME=openldap
+LDAP_VOLUME=openldap-volume
+
+## Openldap image's name.
+LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-openfrontier/openldap}
+
+## Gerrit Openldap configuration
+## If there's no existing openldap server.
 if [ ${#SLAPD_DOMAIN} -gt 0 -a ${#SLAPD_PASSWORD} -gt 0 ]; then
-    LDAP_SERVER="${HOST_NAME}"
+    LDAP_SERVER="${LDAP_NAME}"
     LDAP_ACCOUNTBASE="ou=accounts$(echo .${SLAPD_DOMAIN} | sed 's/\./,dc=/g')"
 fi
 
@@ -73,10 +81,3 @@ NEXUS_VOLUME=nexus-volume
 
 # Nexue docker image's name.
 NEXUS_IMAGE_NAME=${NEXUS_IMAGE_NAME:-openfrontier/nexus}
-
-## Openldap container's name.
-LDAP_NAME=openldap
-LDAP_VOLUME=openldap-volume
-
-## Openldap image's name.
-LDAP_IMAGE_NAME=${LDAP_IMAGE_NAME:-openfrontier/openldap}
