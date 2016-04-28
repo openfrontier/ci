@@ -26,3 +26,6 @@ fi
 
 # Destroy jenkins slave volume.
 source ~/jenkins-slave-docker/destroyJenkinsSlave.sh
+
+# Destroy docker network.
+docker network rm ${CI_NETWORK}

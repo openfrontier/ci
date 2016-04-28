@@ -5,6 +5,9 @@ set -e
 source ~/ci/config
 source ~/ci/config.default
 
+# Create ci network
+  docker network create ${CI_NETWORK}
+
 # Create Nexus server.
 if [ ${#NEXUS_WEBURL} -eq 0 ]; then
     source ~/nexus-docker/createNexus.sh

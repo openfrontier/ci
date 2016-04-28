@@ -5,6 +5,9 @@
 ## Suffix of containers' name
 SUFFIX=${SUFFIX:-$1}
 
+## Docker network
+CI_NETWORK=${CI_NETWORK:-ci-network}
+
 ## OpenLDAP
 if [ ${#SLAPD_DOMAIN} -gt 0 -a ${#SLAPD_PASSWORD} -gt 0 ]; then
     LDAP_SERVER="${HOST_NAME}"
