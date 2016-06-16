@@ -38,8 +38,8 @@ git push origin meta/config:meta/config
 
 # Import demoProject
 git checkout master
-tar xf ~/ci/dockerProject.tar
-git add docker
+cp -R ~/ci/dockerProject .
+git add dockerProject
 git commit -m "Init project"
 git push origin
 
@@ -51,6 +51,7 @@ cd -
 rm -rf ~/ci/demo-docker
 
 # Create job in Jenkins
+sed "s#{{JENKINS_URL}}#${JENKINS_WEBURL}#g" ~/ci/jenkins.demo-docker.config.xml.template > ~/ci/jenkins.demo-docker.config.xml
 curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo-docker < ~/ci/jenkins.demo-docker.config.xml
 
 # Import redmine demo data

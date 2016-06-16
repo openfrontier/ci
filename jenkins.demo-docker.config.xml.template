@@ -48,14 +48,14 @@
       <repoName>openfrontier/demo</repoName>
       <noCache>true</noCache>
       <forcePull>false</forcePull>
-      <buildContext>docker</buildContext>
+      <buildContext>dockerProject</buildContext>
       <skipBuild>false</skipBuild>
       <skipDecorate>true</skipDecorate>
       <repoTag>${BUILD_NUMBER}</repoTag>
       <skipPush>true</skipPush>
       <createFingerprint>true</createFingerprint>
       <skipTagLatest>true</skipTagLatest>
-      <buildAdditionalArgs>--build-arg build_number=${SNAPSHOT_BUILD_NUMBER}</buildAdditionalArgs>
+      <buildAdditionalArgs>--build-arg jenkins_url={{JENKINS_URL}} --build-arg build_number=${SNAPSHOT_BUILD_NUMBER}</buildAdditionalArgs>
       <forceTag>true</forceTag>
     </com.cloudbees.dockerpublish.DockerBuilder>
   </builders>
