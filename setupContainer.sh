@@ -22,3 +22,6 @@ source ~/redmine-docker/setupRedmine.sh
 echo ">>>> Restart Nginx proxy."
 docker restart ${NGINX_NAME}
 
+# Create Jenkins Swarm slaver container.
+echo ">>>> Create Jenkins swarm slave."
+source ~/ci/createJenkinsSwarmSlave.sh
