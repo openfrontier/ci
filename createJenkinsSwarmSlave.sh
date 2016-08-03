@@ -9,6 +9,7 @@ CI_NETWORK=${CI_NETWORK:-ci-network}
 docker run \
   -e NEXUS_REPO=${NEXUS_REPO} \
   --net=${CI_NETWORK} \
+  --restart=unless-stopped \
   -d ${JENKINS_SLAVE_IMAGE} \
   -labels ${LABEL} \
   -mode exclusive \
