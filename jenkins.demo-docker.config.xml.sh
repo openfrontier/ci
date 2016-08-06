@@ -1,3 +1,11 @@
+#!/bin/bash
+
+BUILD_NUMBER='$BUILD_NUMBER'
+SNAPSHOT_BUILD_NUMBER='$SNAPSHOT_BUILD_NUMBER'
+GERRIT_NAME=${GERRIT_NAME:-gerrit}
+JENKINS_WEBURL=${JENKINS_WEBURL:-http://jenkins:8080/jenkins}
+
+cat > ~/ci/jenkins.demo-docker.config.xml <<EOF
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
@@ -19,7 +27,7 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
-        <url>ssh://jenkins@172.17.0.1:29418/demo-docker</url>
+        <url>ssh://jenkins@${GERRIT_NAME}:29418/demo-docker</url>
         <credentialsId>23e83599-3e3b-4bad-a33d-1001043c8aac</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
@@ -55,10 +63,11 @@
       <skipPush>true</skipPush>
       <createFingerprint>true</createFingerprint>
       <skipTagLatest>true</skipTagLatest>
-      <buildAdditionalArgs>--build-arg jenkins_url={{JENKINS_URL}} --build-arg build_number=${SNAPSHOT_BUILD_NUMBER}</buildAdditionalArgs>
+      <buildAdditionalArgs>--build-arg jenkins_url=${JENKINS_WEBURL} --build-arg build_number=${SNAPSHOT_BUILD_NUMBER}</buildAdditionalArgs>
       <forceTag>true</forceTag>
     </com.cloudbees.dockerpublish.DockerBuilder>
   </builders>
   <publishers/>
   <buildWrappers/>
 </project>
+EOF

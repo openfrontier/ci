@@ -1,3 +1,11 @@
+#!/bin/bash
+
+GERRIT_REFSPEC='$GERRIT_REFSPEC'
+GERRIT_BRANCH='$GERRIT_BRANCH'
+BUILD_NUMBER='$BUILD_NUMBER'
+GERRIT_NAME=${GERRIT_NAME:-gerrit}
+
+cat > ~/ci/jenkins.demo.config.xml <<EOF
 <?xml version='1.0' encoding='UTF-8'?>
 <maven2-moduleset plugin="maven-plugin@2.12.1">
   <actions/>
@@ -10,14 +18,14 @@
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
-        <refspec>$GERRIT_REFSPEC</refspec>
-        <url>ssh://jenkins@172.17.0.1:29418/demo</url>
+        <refspec>${GERRIT_REFSPEC}</refspec>
+        <url>ssh://jenkins@${GERRIT_NAME}:29418/demo</url>
         <credentialsId>23e83599-3e3b-4bad-a33d-1001043c8aac</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>$GERRIT_BRANCH</name>
+        <name>${GERRIT_BRANCH}</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
@@ -139,3 +147,4 @@
     <completeBuild>true</completeBuild>
   </runPostStepsIfResult>
 </maven2-moduleset>
+EOF

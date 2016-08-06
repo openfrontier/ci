@@ -51,7 +51,7 @@ cd -
 rm -rf ~/ci/demo-docker
 
 # Create job in Jenkins
-sed "s#{{JENKINS_URL}}#${JENKINS_WEBURL}#g" ~/ci/jenkins.demo-docker.config.xml.template > ~/ci/jenkins.demo-docker.config.xml
+source ~/ci/jenkins.demo-docker.config.xml.sh
 curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo-docker < ~/ci/jenkins.demo-docker.config.xml
 
 # Import redmine demo data
