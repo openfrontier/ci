@@ -55,8 +55,8 @@ cd -
 rm -rf ~/ci/demo
 
 # Create job in Jenkins
-source ~/ci/jenkins.demo.config.xml.sh
-curl -X POST -d@- --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo < ~/ci/jenkins.demo.config.xml
+DEMO_CONFIG_XML=$(source ~/ci/jenkins.demo.config.xml.sh)
+curl --request POST --data-raw "${DEMO_CONFIG_XML}" --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo
 
 # Import redmine demo data
 REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql

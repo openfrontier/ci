@@ -5,7 +5,7 @@ GERRIT_BRANCH='$GERRIT_BRANCH'
 BUILD_NUMBER='$BUILD_NUMBER'
 GERRIT_NAME=${GERRIT_NAME:-gerrit}
 
-cat > ~/ci/jenkins.demo.config.xml <<EOF
+cat <<EOF
 <?xml version='1.0' encoding='UTF-8'?>
 <maven2-moduleset plugin="maven-plugin@2.12.1">
   <actions/>

@@ -5,7 +5,7 @@ SNAPSHOT_BUILD_NUMBER='$SNAPSHOT_BUILD_NUMBER'
 GERRIT_NAME=${GERRIT_NAME:-gerrit}
 JENKINS_WEBURL=${JENKINS_WEBURL:-http://jenkins:8080/jenkins}
 
-cat > ~/ci/jenkins.demo-docker.config.xml <<EOF
+cat <<EOF
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
