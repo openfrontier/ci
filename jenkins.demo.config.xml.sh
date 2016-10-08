@@ -95,7 +95,7 @@ cat <<EOF
       <triggerInformationAction/>
     </com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritTrigger>
   </triggers>
-  <concurrentBuild>false</concurrentBuild>
+  <concurrentBuild>true</concurrentBuild>
   <rootPOM>demo/pom.xml</rootPOM>
   <goals>clean install</goals>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
