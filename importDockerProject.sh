@@ -6,7 +6,7 @@ source ~/ci/config
 source ~/ci/config.default
 
 # Create demo project on Gerrit.
-curl -X PUT --user ${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD} -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo-docker < ~/ci/demoProject.json
+curl --request PUT --user "${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD}" -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo-docker < ~/ci/demoProject.json
 
 # Setup local git.
 rm -rf ~/ci/demo-docker
@@ -52,7 +52,7 @@ rm -rf ~/ci/demo-docker
 
 # Create job in Jenkins
 DEMO_DOCKER_CONFIG_XML=$(source ~/ci/jenkins.demo-docker.config.xml.sh)
-curl --request POST --data-raw "${DEMO_DOCKER_CONFIG_XML}" --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo-docker
+curl --request POST --user "${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD}" --data-raw "${DEMO_DOCKER_CONFIG_XML}" --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo-docker
 
 # Import redmine demo data
 #REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql

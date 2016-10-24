@@ -28,7 +28,7 @@ cat <<EOF
       <hudson.plugins.git.UserRemoteConfig>
         <name>origin</name>
         <url>ssh://jenkins@${GERRIT_NAME}:29418/demo-docker</url>
-        <credentialsId>23e83599-3e3b-4bad-a33d-1001043c8aac</credentialsId>
+        <credentialsId>jenkins-master</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>

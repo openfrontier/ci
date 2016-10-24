@@ -10,7 +10,7 @@ echo ">>>> Create Jenkins swarm slave."
 source ~/ci/createJenkinsSwarmSlave.sh
 
 # Create demo project on Gerrit.
-curl -X PUT --user ${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD} -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < ~/ci/demoProject.json
+curl --request PUT --user "${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD}" -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < ~/ci/demoProject.json
 
 # Setup local git.
 rm -rf ~/ci/demo
@@ -56,7 +56,7 @@ rm -rf ~/ci/demo
 
 # Create job in Jenkins
 DEMO_CONFIG_XML=$(source ~/ci/jenkins.demo.config.xml.sh)
-curl --request POST --data-raw "${DEMO_CONFIG_XML}" --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo
+curl --request POST --user "${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD}" --data-raw "${DEMO_CONFIG_XML}" --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo
 
 # Import redmine demo data
 REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
