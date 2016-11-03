@@ -5,10 +5,6 @@ set -e
 source ~/ci/config
 source ~/ci/config.default
 
-# Create Jenkins Swarm slaver container.
-echo ">>>> Create Jenkins swarm slave."
-source ~/ci/createJenkinsSwarmSlave.sh
-
 # Create demo project on Gerrit.
 curl --request PUT --user "${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD}" -d@- --header "Content-Type: application/json;charset=UTF-8" ${GERRIT_WEBURL}/a/projects/demo < ~/ci/demoProject.json
 
@@ -59,7 +55,7 @@ DEMO_CONFIG_XML=$(source ~/ci/jenkins.demo.config.xml.sh)
 curl --request POST --user "${GERRIT_ADMIN_UID}:${GERRIT_ADMIN_PWD}" --data-raw "${DEMO_CONFIG_XML}" --header "Content-Type: application/xml;charset=UTF-8" ${JENKINS_WEBURL}/createItem?name=demo
 
 # Import redmine demo data
-REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
-docker exec pg-redmine gosu postgres psql -d redmine -U redmine -f /${REDMINE_DEMO_DATA_SQL}
+#REDMINE_DEMO_DATA_SQL=redmine-init-demo.sql
+#docker exec pg-redmine gosu postgres psql -d redmine -U redmine -f /${REDMINE_DEMO_DATA_SQL}
 # Non member add roles
-docker exec pg-redmine gosu postgres psql -d redmine -U redmine -c "update roles set permissions = '---\n- :view_issues\n- :add_issues\n- :view_changesets\n' where id = 1"
+#docker exec pg-redmine gosu postgres psql -d redmine -U redmine -c "update roles set permissions = '---\n- :view_issues\n- :add_issues\n- :view_changesets\n' where id = 1"

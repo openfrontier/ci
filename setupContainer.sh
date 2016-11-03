@@ -15,9 +15,9 @@ echo ">>>> Setup Jenkins."
 source ~/jenkins-docker/setupJenkins.sh
 
 #Integrate Redmine with Openldap and import init data.
-echo ">>>> Setup Redmine."
-source ~/redmine-docker/setupRedmine.sh
+#echo ">>>> Setup Redmine."
+#source ~/redmine-docker/setupRedmine.sh
 
 #Restart Nginx proxy.
-echo ">>>> Restart Nginx proxy."
-docker restart ${NGINX_NAME}
+#echo ">>>> Restart Nginx proxy."
+#docker restart ${NGINX_NAME}
