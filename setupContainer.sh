@@ -6,13 +6,10 @@ echo ">>>> Import common variables."
 source ~/ci/config
 source ~/ci/config.default
 
-#Create administrator in Gerrit.
+#Import local ssh key in Gerrit.
+#Change default All-project access right
 echo ">>>> Setup Gerrit."
-source ~/gerrit-docker/addGerritUser.sh
-
-#Integrate Jenkins with Gerrit.
-echo ">>>> Setup Jenkins."
-source ~/jenkins-docker/setupJenkins.sh
+source ~/gerrit-docker/setupGerrit.sh
 
 #Integrate Redmine with Openldap and import init data.
 #echo ">>>> Setup Redmine."

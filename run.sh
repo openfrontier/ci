@@ -12,7 +12,7 @@ if [ ! -e "${SSH_KEY_PATH}" -o ! -e "${SSH_KEY_PATH}.pub" ]; then
 fi
 
 ~/ci/createContainer.sh ${SUFFIX}
-while [ -z "$(docker logs ${GERRIT_NAME} 2>&1 | grep "Gerrit Code Review [0-9..]* ready")" ]; do
+while [ -z "$(docker logs ${GERRIT_NAME} 2>&1 | grep "Creating user:")" ]; do
     echo "Waiting gerrit ready."
     sleep 1
 done
