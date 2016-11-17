@@ -8,7 +8,7 @@ source ~/ci/config.default
 
 #Create administrator in Gerrit.
 echo ">>>> Setup Gerrit."
-source ~/gerrit-docker/addGerritUser.sh
+source ~/gerrit-docker/gerrit-create-user.sh
 
 #Integrate Jenkins with Gerrit.
 echo ">>>> Setup Jenkins."
