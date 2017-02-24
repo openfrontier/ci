@@ -24,7 +24,7 @@ while [ -z "$(docker logs ${NGINX_NAME} 2>&1 | grep "jenkins ready")" ]; do
 done
 echo "Jenkins is ready"
 
-while [ -z "$(docker logs ${REDMINE_NAME} 2>&1 | grep "INFO success: nginx entered RUNNING state")" ]; do
+while [ -z "$(docker logs ${NGINX_NAME} 2>&1 | grep "redmine ready")" ]; do
     echo "Waiting redmine ready."
     sleep 1
 done
