@@ -72,7 +72,7 @@ NGINX_MAX_UPLOAD_SIZE=${NGINX_MAX_UPLOAD_SIZE:-200m}
 if [ ${#NEXUS_WEBURL} -gt 0 ]; then
     NEXUS_REPO=${NEXUS_WEBURL}/content/groups/public
 else
-    NEXUS_REPO=http://${HOST_NAME}/nexus/content/groups/public
+    NEXUS_REPO=http://nexus:8081/nexus/content/groups/public
 fi
 
 ## Nexus container's name.
