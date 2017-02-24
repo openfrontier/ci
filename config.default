@@ -36,7 +36,7 @@ HTTPD_LISTENURL=proxy-http://*:8080/${GERRIT_NAME}
 GERRIT_SSH_HOST=${HOST_NAME}
 
 ## Gerrit docker image's name
-GERRIT_IMAGE_NAME=${GERRIT_IMAGE_NAME:-openfrontier/gerrit}
+GERRIT_IMAGE_NAME=${GERRIT_IMAGE_NAME:-openfrontier/gerrit-ci}
 
 ## Jenkins container's name
 JENKINS_NAME=jenkins${SUFFIX}
@@ -63,7 +63,7 @@ REDMINE_IMAGE_NAME=${REDMINE_IMAGE_NAME:-sameersbn/redmine}
 NGINX_NAME=proxy
 
 ## Nginx docker image's name
-NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME:-nginx}
+NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME:-openfrontier/nginx}
 
 ## Nginx file upload limit.
 NGINX_MAX_UPLOAD_SIZE=${NGINX_MAX_UPLOAD_SIZE:-200m}
