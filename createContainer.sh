@@ -20,6 +20,9 @@ if [ ${#SLAPD_DOMAIN} -gt 0 -a ${#SLAPD_PASSWORD} -gt 0 ]; then
     source ~/openldap-docker/createOpenLDAP.sh
 fi
 
+# Create OpenLDAP ssp server
+source ~/openldap-docker/createOpenSSP.sh
+
 # Create Gerrit server container.
 source ~/gerrit-docker/createGerrit.sh
 

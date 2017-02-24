@@ -16,6 +16,9 @@ source ~/gerrit-docker/destroyGerrit.sh
 # Destroy Nginx proxy server container.
 source ~/nginx-docker/destroyNginx.sh
 
+# Destroy OpenLDAP ssp server.
+source ~/openldap-docker/destroyOpenSSP.sh
+
 # Destroy OpenLDAP server.
 source ~/openldap-docker/destroyOpenLDAP.sh
 
