@@ -20,12 +20,12 @@
     A Sonatype Nexus server. (Optional)
 
 ## Get docker images.
-    docker pull openfrontier/gerrit
+    docker pull openfrontier/gerrit-ci
     docker pull openfrontier/jenkins
     docker pull openfrontier/jenkins-swarm-maven-slave
     docker pull sameersbn/redmine
     docker pull postgres
-    docker pull nginx
+    docker pull openfrontier/nginx
     docker pull openfrontier/openldap (Optional)
     docker pull openfrontier/nexus (Optional)
 
@@ -48,6 +48,8 @@
     ~/ci/run.sh
 
 ## Access those services.
+    ## Homepage
+    http://your.server.url
     ## Gerrit
     http://your.server.url/gerrit
     Login by <gerrit admin uid> and <gerrit admin password>
