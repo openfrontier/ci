@@ -12,7 +12,11 @@ if [ ! -e "${SSH_KEY_PATH}" -o ! -e "${SSH_KEY_PATH}.pub" ]; then
 fi
 
 #sleep 5
-~/ci/setupContainer.sh
+#Import local ssh key in Gerrit.
+#Change default All-project access right
+echo ">>>> Setup Gerrit."
+source ~/ci/setupGerrit.sh
+
 #sleep 5
 ~/ci/importDemoProject.sh
 ~/ci/importDockerProject.sh
