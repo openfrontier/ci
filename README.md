@@ -1,4 +1,9 @@
 # ci project
+
+# Deprecation warning
+Due to those technology changes on docker and k8s, using pure shell scripts to create a whole ci stack is no longer recommeded anymore.
+This project will not be maintained.
+
 ## Features
 * Continuous integration system base on other docker projects.
 * Create a Gerrit with PostgreSQL as backend and OpenLDAP as authentication server.
